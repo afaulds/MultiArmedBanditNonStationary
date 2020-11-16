@@ -8,3 +8,6 @@ class UCBPolicy:
 
     def get_arm(self, t):
         return random.randrange(self.num_machines)
+
+    def store(self, t, arm_id, reward):
+        pass

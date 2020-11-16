@@ -1,11 +1,12 @@
-import numpy as np
 import random
+import numpy as np
+from History import History
 
-
-class ThompsonSamplingPolicy:
+class DiscountedThompsonSamplingPolicy:
 
     def __init__(self, num_machines):
         self.num_machines = num_machines
+        self.gamma = 0.6
         self.a = [0] * self.num_machines
         self.b = [0] * self.num_machines
 
@@ -20,5 +21,9 @@ class ThompsonSamplingPolicy:
         return best_arm
 
     def store(self, t, arm_id, reward):
-        self.a[arm_id] = self.a[arm_id] + reward
-        self.b[arm_id] = self.b[arm_id] + (1 - reward)
+        for i in range(self.num_machines):
+            self.a[i] = self.gamma * self.a[arm_id]
+            self.b[i] = self.gamma * self.b[arm_id]
+        self.a[arm_id] += reward
+        self.b[arm_id] += (1 - reward)
+

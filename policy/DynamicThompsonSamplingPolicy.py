@@ -2,10 +2,11 @@ import numpy as np
 import random
 
 
-class ThompsonSamplingPolicy:
+class DynamicThompsonSamplingPolicy:
 
     def __init__(self, num_machines):
         self.num_machines = num_machines
+        self.c = 50
         self.a = [0] * self.num_machines
         self.b = [0] * self.num_machines
 
@@ -20,5 +21,9 @@ class ThompsonSamplingPolicy:
         return best_arm
 
     def store(self, t, arm_id, reward):
-        self.a[arm_id] = self.a[arm_id] + reward
-        self.b[arm_id] = self.b[arm_id] + (1 - reward)
+        if self.a[arm_id] + self.b[arm_id] > self.c:
+            self.a[arm_id] = (self.a[arm_id] + reward) * self.c / (self.c + 1)
+            self.b[arm_id] = (self.b[arm_id] + (1 - reward)) * self.c / (self.c + 1)
+        else:
+            self.a[arm_id] = self.a[arm_id] + reward
+            self.b[arm_id] = self.b[arm_id] + (1 - reward)

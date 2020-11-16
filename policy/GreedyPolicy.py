@@ -1,11 +1,12 @@
 import random
-from History import History
 
 class GreedyPolicy:
 
-    def __init__(self, machine_obj):
-        self.num_machines = machine_obj.get_num_machines()
+    def __init__(self, num_machines):
+        self.num_machines = num_machines
         self.epsilon = 0.05
+        self.a = [0] * self.num_machines
+        self.b = [0] * self.num_machines
 
     def get_arm(self, t):
         if random.random() < self.epsilon:
@@ -14,8 +15,15 @@ class GreedyPolicy:
             best_percent = 0
             best_arm = 0
             for arm_id in range(self.num_machines):
-                percent = History.get_win_percent(arm_id)
+                if self.a[arm_id] == 0:
+                    percent = 0
+                else:
+                    percent = 1.0 * self.a[arm_id] / (self.a[arm_id] + self.b[arm_id])
                 if percent > best_percent:
                     best_percent = percent
                     best_arm = arm_id
             return best_arm
+
+    def store(self, t, arm_id, reward):
+        self.a[arm_id] += reward
+        self.b[arm_id] += (1 - reward)

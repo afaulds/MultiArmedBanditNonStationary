@@ -2,8 +2,11 @@ import random
 
 class OraclePolicy:
 
-    def __init__(self, machine_obj):
-        self.machine_obj = machine_obj
+    def __init__(self, num_machines):
+        self.num_machines = num_machines
 
     def get_arm(self, t):
-        return self.machine_obj.oracle(t)
+        return 0
+
+    def store(self, t, arm_id, reward):
+        pass
