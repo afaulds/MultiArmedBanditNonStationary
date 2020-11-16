@@ -6,7 +6,7 @@ class OraclePolicy:
         self.num_machines = num_machines
 
     def get_arm(self, t):
-        return 0
+        return -1
 
     def store(self, t, arm_id, reward):
         pass

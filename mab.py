@@ -1,57 +1,34 @@
 import random
 from History import History
-import machine
+from machine import MachineManager
+from policy import PolicyManager
 import policy
 from utils import Timer
 
 
+force_policy_test = None
+force_machine_test = ['SlowVaryingMachine']
+
+
 def main():
-    for policy_class in ["RandomPolicy", "GreedyPolicy", "OraclePolicy", "ThompsonSamplingPolicy"]:
-        for machine_class in ["TestMachine", "SlowVaryingMachine", "FastVaryingMachine", "AbruptVaryingMachine", "StaticMachine"]:
-            Timer.start(policy_class)
+    pm = PolicyManager()
+    mm = MachineManager()
+    for policy_name in force_policy_test or pm.get_policy_names():
+        for machine_name in force_machine_test or mm.get_machine_names():
+            Timer.start(policy_name)
             History.init()
-            machine_obj = eval("machine.{}()".format(machine_class))
-            policy_obj = eval("policy.{}(machine_obj)".format(policy_class))
-            for t in range(5000):
-                arm_id = policy_obj.get_arm(t)
-                reward = machine_obj.play(t, arm_id)
+            mm.use(machine_name)
+            pm.use(policy_name, mm.get_num_machines())
+            for t in range(1, 5000):
+                if policy_name == 'OraclePolicy':
+                    arm_id = mm.oracle(t)
+                else:
+                    arm_id = pm.get_arm(t)
+                reward = mm.play(t, arm_id)
+                pm.store(t, arm_id, reward)
                 History.store(t, arm_id, reward)
-            History.print(machine_class, policy_class)
-            Timer.stop(policy_class)
-
-
-
-
-def greedy_with_memory_policy(t):
-    epsilon = 0.05
-    if random.random() < epsilon:
-        return Machine.get_random()
-    else:
-        if t % 300 == 0:
-            History.forget()
-        best_percent = 0
-        best_arm = 0
-        for arm_id in range(7):
-            percent = History.get_win_percent(arm_id)
-            if percent > best_percent:
-                best_percent = percent
-                best_arm = arm_id
-        return best_arm
-
-
-def greedy_fade_policy(t):
-    epsilon = 0.05
-    if random.random() < epsilon:
-        return Machine.get_random()
-    else:
-        best_percent = 0
-        best_arm = 0
-        for arm_id in range(7):
-            percent = History.get_fade_win_percent(arm_id)
-            if percent > best_percent:
-                best_percent = percent
-                best_arm = arm_id
-        return best_arm
+            History.print(machine_name, policy_name)
+            Timer.stop(policy_name)
 
 
 if __name__ == "__main__":
