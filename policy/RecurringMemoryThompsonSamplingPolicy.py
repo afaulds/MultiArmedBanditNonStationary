@@ -38,4 +38,4 @@ class RecurringMemoryThompsonSamplingPolicy:
         self.cycle_memory.append((arm_id, reward))
 
     def get_name(self):
-        return 'RMTS (T={})'.format(self.period)
+        return 'RMTS (\u03C4={})'.format(self.period)

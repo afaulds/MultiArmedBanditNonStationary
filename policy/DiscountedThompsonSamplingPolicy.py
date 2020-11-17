@@ -28,4 +28,4 @@ class DiscountedThompsonSamplingPolicy:
         self.b[arm_id] += (1 - reward)
 
     def get_name(self):
-        return 'dTS (g={})'.format(self.gamma)
+        return 'dTS (\u03B3={})'.format(self.gamma)
