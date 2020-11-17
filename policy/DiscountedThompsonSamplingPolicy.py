@@ -22,8 +22,10 @@ class DiscountedThompsonSamplingPolicy:
 
     def store(self, t, arm_id, reward):
         for i in range(self.num_machines):
-            self.a[i] = self.gamma * self.a[arm_id]
-            self.b[i] = self.gamma * self.b[arm_id]
+            self.a[i] = self.gamma * self.a[i]
+            self.b[i] = self.gamma * self.b[i]
         self.a[arm_id] += reward
         self.b[arm_id] += (1 - reward)
 
+    def get_name(self):
+        return 'dTS (g={})'.format(self.gamma)

@@ -35,3 +35,6 @@ class MachineManager:
 
     def get_num_machines(self):
         return self.machine.get_num_machines()
+
+    def get_name(self):
+        return self.machine.get_name()

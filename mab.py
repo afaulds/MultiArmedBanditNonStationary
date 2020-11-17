@@ -6,8 +6,8 @@ import policy
 from utils import Timer
 
 
-force_policy_test = None
-force_machine_test = ['SlowVaryingMachine']
+force_policy_test = None #['DiscountedThompsonSamplingPolicy', 'OraclePolicy', 'ThompsonSamplingPolicy', 'RecurringMemoryThompsonSamplingPolicy']
+force_machine_test = None #['SlowVaryingMachine']
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
                 reward = mm.play(t, arm_id)
                 pm.store(t, arm_id, reward)
                 History.store(t, arm_id, reward)
-            History.print(machine_name, policy_name)
+            History.print(mm.get_name(), pm.get_name())
             Timer.stop(policy_name)
 
 

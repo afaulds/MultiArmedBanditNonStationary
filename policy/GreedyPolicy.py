@@ -27,3 +27,6 @@ class GreedyPolicy:
     def store(self, t, arm_id, reward):
         self.a[arm_id] += reward
         self.b[arm_id] += (1 - reward)
+
+    def get_name(self):
+        return 'Greedy (\u03B5={})'.format(self.epsilon)

@@ -22,3 +22,6 @@ class REXP3Policy:
 
     def store(self, t, arm_id, reward):
         pass
+
+    def get_name(self):
+        return 'REXP3 (\u03B3=)'.format(self.gamma)

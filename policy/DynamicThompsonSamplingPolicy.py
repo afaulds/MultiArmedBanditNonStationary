@@ -27,3 +27,6 @@ class DynamicThompsonSamplingPolicy:
         else:
             self.a[arm_id] = self.a[arm_id] + reward
             self.b[arm_id] = self.b[arm_id] + (1 - reward)
+
+    def get_name(self):
+        return 'DTS (c={})'.format(self.c)

@@ -24,8 +24,8 @@ class DiscountedOptimisticThompsonSamplingPolicy:
 
     def store(self, t, arm_id, reward):
         for i in range(self.num_machines):
-            self.a[i] = self.gamma * self.a[arm_id]
-            self.b[i] = self.gamma * self.b[arm_id]
+            self.a[i] = self.gamma * self.a[i]
+            self.b[i] = self.gamma * self.b[i]
         self.a[arm_id] += reward
         self.b[arm_id] += (1 - reward)
 
@@ -34,3 +34,6 @@ class DiscountedOptimisticThompsonSamplingPolicy:
         if key not in self.beta_mean_cache:
             self.beta_mean_cache[key] = beta.stats(a + 1, b + 1, moments='m')
         return self.beta_mean_cache[key]
+
+    def get_name(self):
+        return 'dOTS (\u03B3={})'.format(self.gamma)

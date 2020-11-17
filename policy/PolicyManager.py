@@ -32,3 +32,6 @@ class PolicyManager:
 
     def store(self, t, arm_id, reward):
         return self.policy.store(t, arm_id, reward)
+
+    def get_name(self):
+        return self.policy.get_name()

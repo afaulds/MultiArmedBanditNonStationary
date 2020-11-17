@@ -27,3 +27,6 @@ class SlowVaryingMachine:
 
     def get_num_machines(self):
         return 4
+
+    def get_name(self):
+        return 'SlowVarying'

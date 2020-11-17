@@ -10,3 +10,6 @@ class RandomPolicy:
 
     def store(self, t, arm_id, reward):
         pass
+
+    def get_name(self):
+        return 'Random'
