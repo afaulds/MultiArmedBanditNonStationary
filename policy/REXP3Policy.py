@@ -8,6 +8,9 @@ class REXP3Policy:
         self.num_machines = num_machines
         self.gamma = 0.3593
 
+    def set_params(self, params):
+        pass
+
     def get_arm(self, t):
         best_value = 0
         best_arm = 0
@@ -24,4 +27,4 @@ class REXP3Policy:
         pass
 
     def get_name(self):
-        return 'REXP3 (\u03B3=)'.format(self.gamma)
+        return "REXP3 (\u03B3=)".format(self.gamma)

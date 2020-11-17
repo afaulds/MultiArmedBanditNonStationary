@@ -4,12 +4,17 @@ class GreedyPolicy:
 
     def __init__(self, num_machines):
         self.num_machines = num_machines
-        self.epsilon = 0.05
         self.a = [0] * self.num_machines
         self.b = [0] * self.num_machines
+        self.params = {
+            "epsilon": 0.05,
+        }
+
+    def set_params(self, params):
+        self.params.update(params)
 
     def get_arm(self, t):
-        if random.random() < self.epsilon:
+        if random.random() < self.params["epsilon"]:
             return random.randrange(self.num_machines)
         else:
             best_percent = 0
@@ -29,4 +34,4 @@ class GreedyPolicy:
         self.b[arm_id] += (1 - reward)
 
     def get_name(self):
-        return 'Greedy (\u03B5={})'.format(self.epsilon)
+        return "Greedy (\u03B5={})".format(self.params["epsilon"])

@@ -5,13 +5,13 @@ class PolicyManager:
 
     def __init__(self):
         self.policy_names = self.get_policy_list()
-        self.policy = ''
+        self.policy = ""
         self.load_classes()
 
     def get_policy_list(self):
         names = []
-        for filename in os.listdir('policy'):
-            if filename.endswith('Policy.py'):
+        for filename in os.listdir("policy"):
+            if filename.endswith("Policy.py"):
                 names.append(filename[:-3])
         return names
 
@@ -19,10 +19,13 @@ class PolicyManager:
         self.classes = {}
         modnames = self.get_policy_list()
         for modname in modnames:
-            self.classes[modname] = getattr(__import__('policy.' + modname), modname)
+            self.classes[modname] = getattr(__import__("policy." + modname), modname)
 
     def get_policy_names(self):
         return self.policy_names
+
+    def set_params(self, params):
+        self.policy.set_params(params)
 
     def use(self, name, num_machines):
         self.policy = eval("self.classes[name].{}(num_machines)".format(name))

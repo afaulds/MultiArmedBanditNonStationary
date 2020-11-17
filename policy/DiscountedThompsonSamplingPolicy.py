@@ -6,9 +6,14 @@ class DiscountedThompsonSamplingPolicy:
 
     def __init__(self, num_machines):
         self.num_machines = num_machines
-        self.gamma = 0.6
         self.a = [0] * self.num_machines
         self.b = [0] * self.num_machines
+        self.params = {
+            "gamma": 0.6,
+        }
+
+    def set_params(self, params):
+        self.params.update(params)
 
     def get_arm(self, t):
         best_value = 0
@@ -22,10 +27,10 @@ class DiscountedThompsonSamplingPolicy:
 
     def store(self, t, arm_id, reward):
         for i in range(self.num_machines):
-            self.a[i] = self.gamma * self.a[i]
-            self.b[i] = self.gamma * self.b[i]
+            self.a[i] = self.params["gamma"] * self.a[i]
+            self.b[i] = self.params["gamma"] * self.b[i]
         self.a[arm_id] += reward
         self.b[arm_id] += (1 - reward)
 
     def get_name(self):
-        return 'dTS (\u03B3={})'.format(self.gamma)
+        return "dTS (\u03B3={})".format(self.params["gamma"])

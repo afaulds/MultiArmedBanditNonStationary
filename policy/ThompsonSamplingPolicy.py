@@ -9,6 +9,9 @@ class ThompsonSamplingPolicy:
         self.a = [0] * self.num_machines
         self.b = [0] * self.num_machines
 
+    def set_params(self, params):
+        pass
+
     def get_arm(self, t):
         best_value = 0
         best_arm = 0
@@ -24,4 +27,4 @@ class ThompsonSamplingPolicy:
         self.b[arm_id] = self.b[arm_id] + (1 - reward)
 
     def get_name(self):
-        return 'TS'
+        return "TS"
