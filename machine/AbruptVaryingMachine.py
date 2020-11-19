@@ -3,30 +3,27 @@ import random
 class AbruptVaryingMachine:
 
     def __init__(self):
-        self.start_time = -1
-        self.section = 0
+        pass
 
     def play(self, t, arm_id):
-        if t > self.section:
-            self.start_time = random.randrange(50) + self.section
-            self.section += 250
+        t_adjusted = t % 250
         if arm_id == 0:
-            if t < self.start_time:
+            if t_adjusted < 50:
                 return 0.0
             else:
                 return 0.1
         elif arm_id == 1:
-            if t < self.start_time + 50:
+            if t_adjusted < 100:
                 return 0.0
             else:
-                return 0.3
+                return 0.37
         elif arm_id == 2:
-            if t < self.start_time + 100:
+            if t_adjusted < 150:
                 return 0.0
             else:
-                return 0.6
+                return 0.63
         elif arm_id == 3:
-            if t < self.start_time + 150:
+            if t_adjusted < 250:
                 return 0.0
             else:
                 return 0.9
