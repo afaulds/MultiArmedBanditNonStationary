@@ -1,4 +1,5 @@
 import random
+import numpy as np
 from scipy.stats import beta
 from History import History
 
@@ -20,7 +21,7 @@ class DiscountedOptimisticThompsonSamplingPolicy:
         best_value = 0
         best_arm = 0
         for arm_id in range(self.num_machines):
-            value = beta.rvs(self.a[arm_id] + 1, self.b[arm_id] + 1)
+            value = np.random.beta(self.a[arm_id] + 1, self.b[arm_id] + 1)
             value = max(value, self.beta_mean(self.a[arm_id] + 1, self.b[arm_id] + 1))
             if value > best_value:
                 best_value = value

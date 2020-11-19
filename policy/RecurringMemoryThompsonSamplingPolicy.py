@@ -12,7 +12,7 @@ class RecurringMemoryThompsonSamplingPolicy:
         self.cycle_memory = []
         self.params = {
             "gamma": 0.6,
-            "period": 1000,
+            "period": 5000,
         }
 
     def set_params(self, params):
@@ -43,4 +43,4 @@ class RecurringMemoryThompsonSamplingPolicy:
         self.cycle_memory.append((arm_id, reward))
 
     def get_name(self):
-        return "RMTS (\u03C4={})".format(self.params["period"])
+        return "RMTS (\u03B3={}, \u03C4={})".format(self.params["gamma"], self.params["period"])
