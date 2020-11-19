@@ -23,8 +23,11 @@ force_machine_test = None
 
 
 def main():
+    # Initialize objects that are plug-n-play for different policies and machines
     pm = PolicyManager()
     mm = MachineManager()
+
+    # Loop through all machines
     for machine_name in force_machine_test or mm.get_machine_names():
 
         # Initialize for machine.
@@ -37,6 +40,7 @@ def main():
             reward = mm.play(t, arm_id)
             h.store_oracle(t, arm_id, reward)
 
+        # Loop through all policies
         for policy_name in force_policy_test or pm.get_policy_names():
             # Run policy for machine
 
@@ -74,7 +78,7 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.6,
+                "gamma": 0.97,
                 "period": 250,
             })
     if machine_name == "FastVaryingMachine":
@@ -92,7 +96,7 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.4,
+                "gamma": 0.85,
                 "period": 100,
             })
     elif machine_name == "SlowVaryingMachine":
@@ -110,7 +114,7 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.4,
+                "gamma": 0.98,
                 "period": 1000,
             })
 

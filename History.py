@@ -70,8 +70,9 @@ class History:
         self.stats["arms"][machine_id]["plays"] += 1
         self.stats["arms"][machine_id]["daily"].append(reward)
 
-    def get_total_rewards(self):
-        return self.stats["total_reward"]
+    def get_regret(self):
+        y = (np.array(self.oracle["reward_total(time)"]) - np.array(self.stats["reward_total(time)"])) / np.array(self.stats["time"])
+        return y[-1]
 
     def print(self, machine, policy):
         self.__print_stats(machine, policy)

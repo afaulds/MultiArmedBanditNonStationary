@@ -1,6 +1,6 @@
-import random
 import numpy as np
-from History import History
+import random
+
 
 class DiscountedThompsonSamplingPolicy:
 
