@@ -94,6 +94,8 @@ class History:
         key = "{}_oracle".format(machine)
         plt.figure(self.__get_figure_num(key))
         plt.plot(x, y)
+        plt.xlim(0, 1000)
+        plt.ylim(0, 1)
         os.makedirs("results/{}".format(machine), exist_ok=True)
         plt.savefig("results/{}/oracle.png".format(machine))
         plt.close()
