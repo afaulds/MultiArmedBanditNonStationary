@@ -26,6 +26,11 @@ class DiscountedThompsonSamplingPolicy:
         return best_arm
 
     def store(self, t, arm_id, reward):
+        value = np.random.uniform(0, 1)
+        if value < reward:
+            reward = 1
+        else:
+            reward = 0
         for i in range(self.num_machines):
             self.a[i] = self.params["gamma"] * self.a[i]
             self.b[i] = self.params["gamma"] * self.b[i]

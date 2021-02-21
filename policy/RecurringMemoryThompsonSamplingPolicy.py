@@ -34,13 +34,13 @@ class RecurringMemoryThompsonSamplingPolicy:
             self.b[i] = self.params["gamma"] * self.b[i]
         self.a[arm_id] += reward
         self.b[arm_id] += (1 - reward)
+        self.cycle_memory.append((arm_id, reward))
 
         # Cycle memory
         if len(self.cycle_memory) > self.params["period"]:
             (arm_id, reward) = self.cycle_memory.pop(0)
-        self.a[arm_id] += reward
-        self.b[arm_id] += (1 - reward)
-        self.cycle_memory.append((arm_id, reward))
+            self.a[arm_id] += reward
+            self.b[arm_id] += (1 - reward)
 
     def get_name(self):
         return "RMTS (\u03B3={}, \u03C4={})".format(self.params["gamma"], self.params["period"])

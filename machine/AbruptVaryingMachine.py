@@ -23,7 +23,7 @@ class AbruptVaryingMachine:
             else:
                 return 0.63
         elif arm_id == 3:
-            if t_adjusted < 250:
+            if t_adjusted < 200:
                 return 0.0
             else:
                 return 0.9

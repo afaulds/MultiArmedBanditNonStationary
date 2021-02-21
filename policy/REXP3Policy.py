@@ -4,10 +4,13 @@ class REXP3Policy:
 
     def __init__(self, num_machines):
         self.num_machines = num_machines
-        print("NOT IMPLEMENTED")
+        self.params = {
+            "gamma": 0.6,
+            "delta_t": 25,
+        }
 
     def set_params(self, params):
-        pass
+        self.params.update(params)
 
     def get_arm(self, t):
         return random.randrange(self.num_machines)
