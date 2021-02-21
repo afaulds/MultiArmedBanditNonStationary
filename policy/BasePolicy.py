@@ -5,12 +5,13 @@ class BasePolicy(ABC):
     """
     This implements a required format for policies.
     """
+
     @abstractmethod
-    def __init__(self, num_machines):
+    def __init__(self, num_arms):
         """
         Initialize a policy.
 
-        num_machines: int - Number of machines to choose from.
+        num_arms: int - Number of arms to choose from.
         """
         pass
 

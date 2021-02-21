@@ -1,7 +1,8 @@
-# Multi-Armed Bandit Non Stationary
+# Restless Recurring Multi-Armed Bandit
 
 ## Introduction
-This is a code base used to validate work for non-statioinary multi-armed bandit research.
+
+This work explores  is a code base used to validate work for non-statioinary multi-armed bandit research.
 
 ## ToDo
 
@@ -18,3 +19,5 @@ This is a code base used to validate work for non-statioinary multi-armed bandit
   - ThompsonSamplingPolicy
   - UCBPolicy
 - Implement non-cyclical machine
+- Comment history file
+- Comment MachineManager

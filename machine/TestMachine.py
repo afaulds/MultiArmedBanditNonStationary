@@ -1,7 +1,21 @@
+from machine.BaseMachine import BaseMachine
 import random
 
 
 class TestMachine:
+    """
+    Changing of most rewarding arm with no cyclical behavior.
+
+    time: 0 - 2000
+       best arm: 0
+       rewards: 90%
+    time: 2000 - 4000
+       best arm: 1
+       rewards: 90%
+    time: 4000 - ???
+       best arm: 3
+       rewards: 90%
+    """
 
     def __init__(self):
         pass
@@ -43,7 +57,7 @@ class TestMachine:
         else:
             return 0
 
-    def get_num_machines(self):
+    def get_num_arms(self):
         return 4
 
     def get_name(self):

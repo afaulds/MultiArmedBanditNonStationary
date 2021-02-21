@@ -1,6 +1,28 @@
+from machine.BaseMachine import BaseMachine
 import random
 
-class AbruptVaryingMachine:
+
+class AbruptVaryingMachine(BaseMachine):
+    """
+    Step function changing of most rewarding arm with cyclical behavior.
+
+    time: 0 - 50
+       best arm: no arm
+       rewards: 0%
+    time: 50 - 100
+       best arm: 0
+       rewards: 10%
+    time: 100 - 150
+       best arm: 1
+       rewards: 37%
+    time: 150 - 200
+       best arm: 2
+       rewards: 63%
+    time: 200 - 250
+       best arm: 3
+       rewards: 90%
+    repeat
+    """
 
     def __init__(self):
         pass
@@ -31,14 +53,14 @@ class AbruptVaryingMachine:
     def oracle(self, t):
         best_arm_id = 0
         best_value = 0
-        for i in range(self.get_num_machines()):
+        for i in range(self.get_num_arms()):
             value = self.play(t, i)
             if value > best_value:
                 best_value = value
                 best_arm_id = i
         return best_arm_id
 
-    def get_num_machines(self):
+    def get_num_arms(self):
         return 4
 
     def get_name(self):

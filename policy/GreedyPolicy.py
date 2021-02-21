@@ -4,10 +4,10 @@ import random
 
 class GreedyPolicy(BasePolicy):
 
-    def __init__(self, num_machines):
-        self.num_machines = num_machines
-        self.a = [0] * self.num_machines
-        self.b = [0] * self.num_machines
+    def __init__(self, num_arms):
+        self.num_arms = num_arms
+        self.a = [0] * self.num_arms
+        self.b = [0] * self.num_arms
         self.params = {
             "epsilon": 0.05,
         }
@@ -17,11 +17,11 @@ class GreedyPolicy(BasePolicy):
 
     def get_arm(self, t):
         if random.random() < self.params["epsilon"]:
-            return random.randrange(self.num_machines)
+            return random.randrange(self.num_arms)
         else:
             best_percent = 0
             best_arm = 0
-            for arm_id in range(self.num_machines):
+            for arm_id in range(self.num_arms):
                 if self.a[arm_id] == 0:
                     percent = 0
                 else:

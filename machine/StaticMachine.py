@@ -1,7 +1,17 @@
+from machine.BaseMachine import BaseMachine
 import random
 
 
-class StaticMachine:
+class StaticMachine(BaseMachine):
+    """
+    This is a machine that one arm pays out
+    more than the other arms through all time. The
+    best arm is static.
+
+    time: 0 - ???
+       best arm: 1
+       rewards: 90%
+    """
 
     def __init__(self):
         pass
@@ -19,8 +29,8 @@ class StaticMachine:
     def oracle(self, t):
         return 1
 
-    def get_num_machines(self):
+    def get_num_arms(self):
         return 4
 
     def get_name(self):
-        return 'Static'
+        return "Static"

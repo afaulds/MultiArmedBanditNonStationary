@@ -6,7 +6,8 @@ import policy
 from utils import Timer
 
 
-force_policy_test = [
+force_policy_test = None
+[
     "DiscountedThompsonSamplingPolicy",
     "DiscountedOptimisticThompsonSamplingPolicy",
     "DynamicThompsonSamplingPolicy",
@@ -23,6 +24,11 @@ force_machine_test = None
 
 
 def main():
+    """
+    Main loop to run through all combinations
+    of machines and policies.
+    """
+
     # Initialize objects that are plug-n-play for different policies and machines
     pm = PolicyManager()
     mm = MachineManager()
@@ -46,7 +52,7 @@ def main():
 
             # Initialize policy
             Timer.start(policy_name)
-            pm.use(policy_name, mm.get_num_machines())
+            pm.use(policy_name, mm.get_num_arms())
             set_optimal_params(machine_name, policy_name, pm)
             h.reset()
 
@@ -63,6 +69,14 @@ def main():
 
 
 def set_optimal_params(machine_name, policy_name, pm):
+    """
+    Set optimal parameters for each run. These are precalculated
+    to compare algorithms with the best results
+
+    machine_name: string - Name of the machine
+    policy_name: string - Name of the policy
+    pm: PolicyManager - Used to set optimal parameters
+    """
     if machine_name == "AbruptVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({

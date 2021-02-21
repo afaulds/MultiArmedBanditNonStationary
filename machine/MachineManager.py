@@ -2,16 +2,23 @@ import os
 
 
 class MachineManager:
+    """
+    This allows for dynamic plug-n-play of all machines.
+    By adding machines to the machine directory and ending
+    the name with Machine.py and inheriting from BaseMachine,
+    this class automatically reads the policy and allows it
+    to be called.
+    """
 
     def __init__(self):
         self.machine_names = self.get_machine_list()
-        self.machine = ''
+        self.machine = ""
         self.load_classes()
 
     def get_machine_list(self):
         names = []
-        for filename in os.listdir('machine'):
-            if filename.endswith("Machine.py"):
+        for filename in os.listdir("machine"):
+            if filename.endswith("Machine.py") and not filename.endswith("BaseMachine.py"):
                 names.append(filename[:-3])
         return names
 
@@ -19,7 +26,7 @@ class MachineManager:
         self.classes = {}
         modnames = self.get_machine_list()
         for modname in modnames:
-            self.classes[modname] = getattr(__import__('machine.' + modname), modname)
+            self.classes[modname] = getattr(__import__("machine." + modname), modname)
 
     def get_machine_names(self):
         return self.machine_names
@@ -33,8 +40,8 @@ class MachineManager:
     def oracle(self, t):
         return self.machine.oracle(t)
 
-    def get_num_machines(self):
-        return self.machine.get_num_machines()
+    def get_num_arms(self):
+        return self.machine.get_num_arms()
 
     def get_name(self):
         return self.machine.get_name()

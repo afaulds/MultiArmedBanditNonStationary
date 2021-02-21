@@ -52,15 +52,15 @@ class PolicyManager:
         """
         self.policy.set_params(params)
 
-    def use(self, name, num_machines):
+    def use(self, name, num_arms):
         """
         Indicates which policy to start using. Select by name
         and indicate how many machines the policy can choose from.
 
         name: string - Name of the policy
-        num_machines: int - Number of machines for the policy to choose from
+        num_arms: int - Number of arms for the policy to choose from
         """
-        self.policy = eval("self.classes[name].{}(num_machines)".format(name))
+        self.policy = eval("self.classes[name].{}(num_arms)".format(name))
 
     def get_arm(self, t):
         """
