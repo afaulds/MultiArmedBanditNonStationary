@@ -16,7 +16,7 @@ force_machine_test = [
     "SlowVaryingMachine",
 ]
 num_runs = 5
-param_range = np.linspace(0.8,1.0,41)
+param_range = np.linspace(0,3000,31)
 
 def main():
     pm = PolicyManager()
@@ -41,7 +41,8 @@ def main():
                     h.reset()
                     pm.use(policy_name, mm.get_num_machines())
                     pm.set_params({
-                       "gamma": gamma,
+                       "gamma": 0.9,
+                       "period": gamma,
                     })
                     for t in range(1, 5000):
                         arm_id = pm.get_arm(t)
