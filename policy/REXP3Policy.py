@@ -1,6 +1,7 @@
+from policy.BasePolicy import BasePolicy
 import random
 
-class REXP3Policy:
+class REXP3Policy(BasePolicy):
 
     def __init__(self, num_machines):
         self.num_machines = num_machines

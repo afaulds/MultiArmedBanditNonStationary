@@ -1,9 +1,9 @@
-import random
+from policy.BasePolicy import BasePolicy
 import numpy as np
 from scipy.stats import beta
-from History import History
 
-class DiscountedOptimisticThompsonSamplingPolicy:
+
+class DiscountedOptimisticThompsonSamplingPolicy(BasePolicy):
 
     def __init__(self, num_machines):
         self.num_machines = num_machines

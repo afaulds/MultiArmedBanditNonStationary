@@ -1,6 +1,8 @@
+from policy.BasePolicy import BasePolicy
 import random
 
-class RandomPolicy:
+
+class RandomPolicy(BasePolicy):
 
     def __init__(self, num_machines):
         self.num_machines = num_machines

@@ -1,9 +1,10 @@
+from policy.BasePolicy import BasePolicy
 import math
 import numpy as np
 import random
 
 
-class RecurringMemoryThompsonSamplingPolicy:
+class RecurringMemoryThompsonSamplingPolicy(BasePolicy):
 
     def __init__(self, num_machines):
         self.num_machines = num_machines

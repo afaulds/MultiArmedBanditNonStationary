@@ -1,8 +1,8 @@
+from policy.BasePolicy import BasePolicy
 import numpy as np
-import random
 
 
-class ThompsonSamplingPolicy:
+class ThompsonSamplingPolicy(BasePolicy):
 
     def __init__(self, num_machines):
         self.num_machines = num_machines
