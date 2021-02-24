@@ -4,6 +4,11 @@ from scipy.stats import beta
 
 
 class DiscountedOptimisticThompsonSamplingPolicy(BasePolicy):
+    """
+    Similar to Discounted Thompson Sampling, this includes
+    mean or expected as a factor in selection. Always picks
+    mean or higher in the beta distribution.
+    """
 
     def __init__(self, num_arms):
         self.num_arms = num_arms

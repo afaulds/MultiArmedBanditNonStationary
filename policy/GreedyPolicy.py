@@ -3,6 +3,11 @@ import random
 
 
 class GreedyPolicy(BasePolicy):
+    """
+    Greedy policy plays the arm with the best probability.
+    It uses exploration epsilon percent of the time to find
+    a new better arm, otherwise it only plays the best arm.
+    """
 
     def __init__(self, num_arms):
         self.num_arms = num_arms

@@ -3,6 +3,15 @@ import numpy as np
 
 
 class DynamicThompsonSamplingPolicy(BasePolicy):
+    """
+    This is similar to Thompson Sampling except it has
+    c which is a a+b peak value. If a+b exceeds this value,
+    a and b are scaled so that a+b = c. This is less of a
+    "forgetting the past" but makes it so the system keeps
+    exploration. a+b determines how much exploration there is.
+    The smaller a+b, the more exploration, the greater a+b,
+    the more exploitation.
+    """
 
     def __init__(self, num_arms):
         self.num_arms = num_arms

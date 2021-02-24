@@ -12,18 +12,7 @@ Raj, V., & Kalyani, S. (2017). Taming non-stationary bandits: A Bayesian approac
 
 ## ToDo
 
-- Implement RExp3Policy
 - Implement table with overall payout / regret by policy and machine
-- Validate
-  - DiscountedThompsonSamplingPolicy
-  - DiscountedOptimisticThompsonSamplingPolicy
-  - DynamicThompsonSamplingPolicy
-  - GreedyPolicy
-  - RandomPolicy
-  - RecurringMemoryThompsonSamplingPolicy
-  - REXP3Policy
-  - ThompsonSamplingPolicy
-  - UCBPolicy
 - Implement non-cyclical machine
 - Comment history file
 - Comment MachineManager

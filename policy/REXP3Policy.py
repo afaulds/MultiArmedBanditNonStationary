@@ -20,4 +20,4 @@ class REXP3Policy(BasePolicy):
         pass
 
     def get_name(self):
-        return "Random"
+        return "REXP3"

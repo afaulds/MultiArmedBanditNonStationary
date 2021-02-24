@@ -3,6 +3,12 @@ import numpy as np
 
 
 class DiscountedThompsonSamplingPolicy(BasePolicy):
+    """
+    This is similar to Thompson Sampling except it has
+    gamma that is a discounting factor. This factor is
+    multiplied by the previous a and b values before
+    the new reward is factored in. It is a decay factor.
+    """
 
     def __init__(self, num_arms):
         self.num_arms = num_arms
