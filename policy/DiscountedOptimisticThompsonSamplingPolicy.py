@@ -43,7 +43,7 @@ class DiscountedOptimisticThompsonSamplingPolicy(BasePolicy):
     def beta_mean(self, a, b):
         key = "{}_{}".format(a, b)
         if key not in self.beta_mean_cache:
-            self.beta_mean_cache[key] = beta.stats(a + 1, b + 1, moments="m")
+            self.beta_mean_cache[key] = beta.stats(a, b, moments="m")
         return self.beta_mean_cache[key]
 
     def get_name(self):

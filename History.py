@@ -74,12 +74,16 @@ class History:
         y = (np.array(self.oracle["reward_total(time)"]) - np.array(self.stats["reward_total(time)"])) / np.array(self.stats["time"])
         return y[-1]
 
+    def get_reward(self):
+        return self.stats["reward_total(time)"][-1]
+
     def print(self, machine, policy):
         self.__print_stats(machine, policy)
         self.__plot_oracle(machine, policy)
         self.__plot_reward(machine, policy)
         self.__plot_regret(machine, policy)
         self.__plot_arm(machine, policy)
+        self.__write_reward(machine, policy)
 
     def __print_stats(self, machine, policy):
         print("{}".format(policy))
@@ -147,3 +151,52 @@ class History:
         if key not in History.figure:
             History.figure[key] = len(History.figure)
         return History.figure[key]
+
+    def __write_reward(self, machine, policy):
+        machine_list = []
+        policy_list = []
+        reward = {}
+        with open("results/results.md", "r") as infile:
+            line_num = 0
+            for line in infile:
+                if line_num == 0:
+                    items = line.strip("\n|").split("|")
+                    machine_list.extend(items)
+                elif line_num > 1:
+                    items = line.strip("\n|").split("|")
+                    p = items[0]
+                    policy_list.append(p)
+                    for i in range(len(items)-1):
+                        m = machine_list[i]
+                        key = "{}_{}".format(m, p)
+                        reward[key] = float(items[i+1])
+                line_num += 1
+        policy = policy.split(' ')[0]
+        if machine not in machine_list:
+            machine_list.append(machine)
+        if policy not in policy_list:
+            policy_list.append(policy)
+        key = "{}_{}".format(machine, policy)
+        reward[key] = self.stats["total_reward"]
+
+        with open("results/results.md", "w") as outfile:
+            outfile.write("||")
+            for machine in machine_list:
+                outfile.write("{}|".format(machine))
+            outfile.write("\n")
+
+            outfile.write("|---|")
+            for machine in machine_list:
+                outfile.write("---|".format(machine))
+            outfile.write("\n")
+
+            for policy in policy_list:
+                outfile.write("|{}|".format(policy))
+                for machine in machine_list:
+                    key = "{}_{}".format(machine, policy)
+                    val = 0
+                    if key in reward:
+                        val = reward[key]
+                    outfile.write("{:.2f}|".format(val))
+                outfile.write("\n")
+

@@ -67,116 +67,91 @@ def set_optimal_params(machine_name, policy_name, pm):
     if machine_name == "AbruptVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
-               "c": 50,
+               "c": 1,
             })
         elif policy_name == "DiscountedThompsonSamplingPolicy":
             pm.set_params({
-               "gamma": 0.8,
+               "gamma": 0.95,
             })
         elif policy_name == "DiscountedOptimisticThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.8,
-            })
-        elif policy_name == "REXP3Policy":
-            pm.set_params({
-                "gamma": 0.254,
-                "delta": 50,
+                "gamma": 0.95,
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.97,
+                "gamma": 0.95,
                 "period": 250,
             })
     if machine_name == "FastVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
-               "c": 25,
+               "c": 2,
             })
         elif policy_name == "DiscountedThompsonSamplingPolicy":
             pm.set_params({
-               "gamma": 0.4,
+               "gamma": 0.95,
             })
         elif policy_name == "DiscountedOptimisticThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.4,
-            })
-        elif policy_name == "REXP3Policy":
-            pm.set_params({
-                "gamma": 0.359,
-                "period": 25,
+                "gamma": 0.95,
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.85,
+                "gamma": 0.95,
                 "period": 100,
             })
     elif machine_name == "SlowVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
-                "c": 250,
+                "c": 5,
             })
         elif policy_name == "DiscountedThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.98,
+                "gamma": 0.95,
             })
         elif policy_name == "DiscountedOptimisticThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.98,
-            })
-        elif policy_name == "REXP3Policy":
-            pm.set_params({
-                "gamma": 0.114,
-                "period": 250,
+                "gamma": 0.95,
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 0.98,
+                "gamma": 0.95,
                 "period": 1000,
             })
     elif machine_name == "StaticMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
-                "c": 250,
+                "c": 2,
             })
         elif policy_name == "DiscountedThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 1.0,
+                "gamma": 0.95,
             })
         elif policy_name == "DiscountedOptimisticThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 1.0,
-            })
-        elif policy_name == "REXP3Policy":
-            pm.set_params({
-                "gamma": 0.1,
-                "period": 1250,
+                "gamma": 0.95,
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 1.00,
+                "gamma": 0.95,
                 "period": 5000,
             })
     elif machine_name == "TestMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
-                "c": 250,
+                "c": 2,
             })
         elif policy_name == "DiscountedThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 1.0,
+                "gamma": 0.95,
             })
         elif policy_name == "DiscountedOptimisticThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 1.0,
-            })
-        elif policy_name == "REXP3Policy":
-            pm.set_params({
-                "gamma": 0.1,
-                "period": 1250,
+                "gamma": 0.95,
             })
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
-                "gamma": 1.00,
+                "gamma": 0.95,
                 "period": 5000,
             })
 
