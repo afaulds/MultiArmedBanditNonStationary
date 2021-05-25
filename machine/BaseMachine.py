@@ -28,7 +28,7 @@ class BaseMachine(ABC):
     def oracle(self, t):
         """
         In order to calculate regret, we need an oracle to
-        view inside the machine and indeicate
+        view inside the machine and indicate
 
         t: int - Time step
         """
