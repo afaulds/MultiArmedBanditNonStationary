@@ -29,9 +29,8 @@ def main():
 
         # Deteremine dynamic oracle.
         for t in range(1, 5000):
-            arm_id = mm.oracle(t)
-            reward = mm.play(t, arm_id)
-            h.store_oracle(t, arm_id, reward)
+            arm_id, prob = mm.oracle(t)
+            h.store_oracle(t, arm_id, prob)
 
         # Loop through all policies
         for policy_name in force_policy_test or pm.get_policy_names():
@@ -170,7 +169,7 @@ def set_optimal_params(machine_name, policy_name, pm):
         elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
             pm.set_params({
                 "gamma": 0.95,
-                "period": 50was ,
+                "period": 50,
             })
 
 
