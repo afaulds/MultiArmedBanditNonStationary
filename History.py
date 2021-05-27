@@ -32,43 +32,43 @@ class History:
             "arms": [],
         }
 
-    def store_oracle(self, t, machine_id, reward):
+    def store_oracle(self, t, arm_id, reward):
         self.oracle["total_reward"] += reward
         self.oracle["plays"] += 1
         self.oracle["time"].append(t)
         self.oracle["reward(time)"].append(reward)
         self.oracle["reward_normalized(time)"].append(self.oracle["total_reward"] / t)
         self.oracle["reward_total(time)"].append(self.oracle["total_reward"])
-        self.oracle["arm(time)"].append(machine_id)
-        while machine_id >= len(self.oracle["arms"]):
+        self.oracle["arm(time)"].append(arm_id)
+        while arm_id >= len(self.oracle["arms"]):
             self.oracle["arms"].append({
                 "rewards": 0,
                 "rewards_fade": 0,
                 "plays": 0,
                 "daily": [],
             })
-        self.oracle["arms"][machine_id]["rewards"] += reward
-        self.oracle["arms"][machine_id]["plays"] += 1
-        self.oracle["arms"][machine_id]["daily"].append(reward)
+        self.oracle["arms"][arm_id]["rewards"] += reward
+        self.oracle["arms"][arm_id]["plays"] += 1
+        self.oracle["arms"][arm_id]["daily"].append(reward)
 
-    def store(self, t, machine_id, reward):
+    def store(self, t, arm_id, reward):
         self.stats["total_reward"] += reward
         self.stats["plays"] += 1
         self.stats["time"].append(t)
         self.stats["reward(time)"].append(reward)
         self.stats["reward_normalized(time)"].append(self.stats["total_reward"] / t)
         self.stats["reward_total(time)"].append(self.stats["total_reward"])
-        self.stats["arm(time)"].append(machine_id)
-        while machine_id >= len(self.stats["arms"]):
+        self.stats["arm(time)"].append(arm_id)
+        while arm_id >= len(self.stats["arms"]):
             self.stats["arms"].append({
                 "rewards": 0,
                 "rewards_fade": 0,
                 "plays": 0,
                 "daily": [],
             })
-        self.stats["arms"][machine_id]["rewards"] += reward
-        self.stats["arms"][machine_id]["plays"] += 1
-        self.stats["arms"][machine_id]["daily"].append(reward)
+        self.stats["arms"][arm_id]["rewards"] += reward
+        self.stats["arms"][arm_id]["plays"] += 1
+        self.stats["arms"][arm_id]["daily"].append(reward)
 
     def get_regret(self):
         y = (np.array(self.oracle["reward_total(time)"]) - np.array(self.stats["reward_total(time)"])) / np.array(self.stats["time"])
@@ -95,13 +95,23 @@ class History:
     def __plot_oracle(self, machine, policy):
         x = self.oracle["time"]
         y = self.oracle["reward(time)"]
-        key = "{}_oracle".format(machine)
+        key = "{}_oracle_reward".format(machine)
         plt.figure(self.__get_figure_num(key))
         plt.plot(x, y)
         plt.xlim(0, 1000)
         plt.ylim(0, 1)
         os.makedirs("results/{}".format(machine), exist_ok=True)
-        plt.savefig("results/{}/oracle.png".format(machine))
+        plt.savefig("results/{}/oracle_reward.png".format(machine))
+        plt.close()
+        x = self.oracle["time"]
+        y = self.oracle["arm(time)"]
+        key = "{}_oracle_arm".format(machine)
+        plt.figure(self.__get_figure_num(key))
+        plt.plot(x, y)
+        plt.xlim(0, 1000)
+        plt.ylim(0, 4)
+        os.makedirs("results/{}".format(machine), exist_ok=True)
+        plt.savefig("results/{}/oracle_arm.png".format(machine))
         plt.close()
 
     def __plot_reward(self, machine, policy):

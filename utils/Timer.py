@@ -1,5 +1,6 @@
 import time
 
+
 class Timer:
     t = {}
 
@@ -15,5 +16,4 @@ class Timer:
     def stop(key="", print_output=True):
         duration = time.time() - Timer.t[key]
         if print_output:
-            print("{}: {}s".format(key, duration))
-
+            print("{}: {:.2f}s".format(key, duration))

@@ -154,6 +154,24 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.95,
                 "period": 5000,
             })
+    elif machine_name == "AdversarialMachine":
+        if policy_name == "DynamicThompsonSamplingPolicy":
+            pm.set_params({
+                "c": 2,
+            })
+        elif policy_name == "DiscountedThompsonSamplingPolicy":
+            pm.set_params({
+                "gamma": 0.95,
+            })
+        elif policy_name == "DiscountedOptimisticThompsonSamplingPolicy":
+            pm.set_params({
+                "gamma": 0.95,
+            })
+        elif policy_name == "RecurringMemoryThompsonSamplingPolicy":
+            pm.set_params({
+                "gamma": 0.95,
+                "period": 50was ,
+            })
 
 
 if __name__ == "__main__":

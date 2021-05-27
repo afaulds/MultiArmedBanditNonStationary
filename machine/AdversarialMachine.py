@@ -10,17 +10,17 @@ class AdversarialMachine(BaseMachine):
 
     def __init__(self):
         self.best_arm_id = 0
-        self.max_wins = 20
+        self.max_wins = 200
         self.num_wins = 0
         pass
 
     def play(self, t, arm_id):
         result = 0
         if arm_id == self.best_arm_id:
-            result = int(random.random() < 0.8)
+            result = 0.8
         else:
-            result = int(random.random() < 0.3)
-        if result > 0:
+            result = 0.3
+        if result > 0.5:
             self.num_wins += 1
         if self.num_wins > self.max_wins:
             self.num_wins = 0
