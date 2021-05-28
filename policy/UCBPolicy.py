@@ -15,8 +15,8 @@ class UCBPolicy(BasePolicy):
 
     def __init__(self, num_arms):
         self.num_arms = num_arms
-        self.a = [0] * self.num_arms
-        self.b = [0] * self.num_arms
+        self.a = [1] * self.num_arms
+        self.b = [1] * self.num_arms
 
     def set_params(self, params):
         pass
@@ -25,12 +25,8 @@ class UCBPolicy(BasePolicy):
         best_ucb = 0
         best_arm = 0
         for arm_id in range(self.num_arms):
-            if self.a[arm_id] == 0:
-                ucb = 0
-                ucb += 9999.0
-            else:
-                ucb = 1.0 * self.a[arm_id] / (self.a[arm_id] + self.b[arm_id])
-                ucb += np.sqrt(2 * np.log(t) / (self.a[arm_id] + self.b[arm_id]))
+            ucb = 1.0 * self.a[arm_id] / (self.a[arm_id] + self.b[arm_id])
+            ucb += np.sqrt(2 * np.log(t) / (self.a[arm_id] + self.b[arm_id]))
             if ucb > best_ucb:
                 best_ucb = ucb
                 best_arm = arm_id

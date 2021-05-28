@@ -97,7 +97,7 @@ class History:
 
     def __plot_regret(self, machine, policy):
         x = self.stats["time"]
-        y = np.array(self.oracle["reward_total(time)"]) - np.array(self.stats["reward_total(time)"])
+        y = (np.array(self.oracle["reward_normalized(time)"]) - np.array(self.stats["reward_normalized(time)"]))
         key = "{}_regret".format(machine)
         plt.figure(self.__get_figure_num(key))
         plt.plot(x, y, label=policy)

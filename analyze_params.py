@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 
 
 force_policy_test = [
-    "DiscountedThompsonSamplingPolicy",
+    "RecurringMemoryThompsonSamplingPolicy",
 ]
 force_machine_test = None
+T = 5000
 all_params = {}
 num_runs = 10
 param_range = np.linspace(0.8, 1.0, 50)
@@ -29,7 +30,7 @@ def main():
         h = History()
 
         # Deteremine dynamic oracle.
-        for t in range(1, 5000):
+        for t in range(1, T):
             arm_id, prob = mm.oracle(t)
             h.store_oracle(t, arm_id, prob)
 
@@ -46,7 +47,7 @@ def main():
                     pm.set_params({
                        "gamma": param_val,
                     })
-                    for t in range(1, 5000):
+                    for t in range(1, T):
                         arm_id = pm.get_arm(t)
                         reward = mm.play(t, arm_id)
                         pm.store(t, arm_id, reward)

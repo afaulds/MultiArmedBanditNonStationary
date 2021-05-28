@@ -12,9 +12,8 @@ class DiscountedOptimisticThompsonSamplingPolicy(BasePolicy):
 
     def __init__(self, num_arms):
         self.num_arms = num_arms
-        self.a = [0] * self.num_arms
-        self.b = [0] * self.num_arms
-        self.beta_mean_cache = {}
+        self.a = [1] * self.num_arms
+        self.b = [1] * self.num_arms
         self.params = {
             "gamma": 0.6,
         }
@@ -26,8 +25,8 @@ class DiscountedOptimisticThompsonSamplingPolicy(BasePolicy):
         best_value = 0
         best_arm = 0
         for arm_id in range(self.num_arms):
-            value = np.random.beta(self.a[arm_id] + 1, self.b[arm_id] + 1)
-            value = max(value, self.beta_mean(self.a[arm_id] + 1, self.b[arm_id] + 1))
+            value = np.random.beta(self.a[arm_id], self.b[arm_id])
+            value = max(value, self.a[arm_id] / (self.a[arm_id] + self.b[arm_id]))
             if value > best_value:
                 best_value = value
                 best_arm = arm_id
@@ -39,12 +38,6 @@ class DiscountedOptimisticThompsonSamplingPolicy(BasePolicy):
             self.b[i] = self.params["gamma"] * self.b[i]
         self.a[arm_id] += reward
         self.b[arm_id] += (1 - reward)
-
-    def beta_mean(self, a, b):
-        key = "{}_{}".format(a, b)
-        if key not in self.beta_mean_cache:
-            self.beta_mean_cache[key] = beta.stats(a, b, moments="m")
-        return self.beta_mean_cache[key]
 
     def get_name(self):
         return "dOTS (\u03B3={})".format(self.params["gamma"])
