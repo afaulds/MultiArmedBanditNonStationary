@@ -1,4 +1,3 @@
-import random
 from History import History
 from machine import MachineManager
 from policy import PolicyManager
@@ -8,6 +7,7 @@ from utils import Timer
 
 force_policy_test = None
 force_machine_test = None
+T = 5000 # Max time
 
 
 def main():
@@ -28,7 +28,7 @@ def main():
         h = History()
 
         # Deteremine dynamic oracle.
-        for t in range(1, 5000):
+        for t in range(1, T):
             arm_id, prob = mm.oracle(t)
             h.store_oracle(t, arm_id, prob)
 
@@ -43,7 +43,7 @@ def main():
             h.reset()
 
             # Loop getting arm, playing machine, saving reward
-            for t in range(1, 5000):
+            for t in range(1, T):
                 arm_id = pm.get_arm(t)
                 reward = mm.play(t, arm_id)
                 pm.store(t, arm_id, reward)
@@ -135,7 +135,7 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.95,
                 "period": 5000,
             })
-    elif machine_name == "TestMachine":
+    elif machine_name == "NonCycleVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
                 "c": 2,

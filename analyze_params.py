@@ -11,29 +11,29 @@ force_policy_test = [
     "DiscountedThompsonSamplingPolicy",
 ]
 force_machine_test = None
-[
-    "AbruptVaryingMachine",
-    "FastVaryingMachine",
-    "SlowVaryingMachine",
-]
 all_params = {}
 num_runs = 10
-param_range = np.linspace(0.0, 1.0, 50)
+param_range = np.linspace(0.8, 1.0, 50)
+
 
 def main():
     load_param()
     pm = PolicyManager()
     mm = MachineManager()
+
+    # Loop through all machines
     for machine_name in force_machine_test or mm.get_machine_names():
+
+        # Initialize for machine.
         mm.use(machine_name)
         h = History()
 
         # Deteremine dynamic oracle.
         for t in range(1, 5000):
-            arm_id = mm.oracle(t)
-            reward = mm.play(t, arm_id)
-            h.store_oracle(t, arm_id, reward)
+            arm_id, prob = mm.oracle(t)
+            h.store_oracle(t, arm_id, prob)
 
+        # Loop through all policies
         for policy_name in force_policy_test or pm.get_policy_names():
             x = [0] * len(param_range)
             y = [0] * len(param_range)
@@ -74,9 +74,9 @@ def main():
 
 def load_param():
     global all_params
-    with open("results/param/params.txt", "r") as infile:
-        all_params = json.loads(infile.read())
-
+    if os.path.exists("results/param/params.txt"):
+        with open("results/param/params.txt", "r") as infile:
+            all_params = json.loads(infile.read())
 
 def save_param():
     with open("results/param/params.txt", "w") as outfile:

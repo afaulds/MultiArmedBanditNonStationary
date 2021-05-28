@@ -1,5 +1,4 @@
 from policy.BasePolicy import BasePolicy
-import math
 import numpy as np
 
 
@@ -31,7 +30,7 @@ class UCBPolicy(BasePolicy):
                 ucb += 9999.0
             else:
                 ucb = 1.0 * self.a[arm_id] / (self.a[arm_id] + self.b[arm_id])
-                ucb += math.sqrt(2 * math.log(t) / (self.a[arm_id] + self.b[arm_id]))
+                ucb += np.sqrt(2 * np.log(t) / (self.a[arm_id] + self.b[arm_id]))
             if ucb > best_ucb:
                 best_ucb = ucb
                 best_arm = arm_id
