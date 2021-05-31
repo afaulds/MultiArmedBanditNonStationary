@@ -1,21 +1,25 @@
 from History import History
 from machine import MachineManager
 from policy import PolicyManager
-import policy
 import sys
 from utils import Timer
 
 
-force_policy_test = None
-force_machine_test = None
-T = 5000 # Max time
-
-
 def main():
+    formula = sys.argv[1].strip("\'")
+    score = evaluate(formula, "SlowVaryingMachine")
+    if score > 3000:
+        score += evaluate(formula, "FastVaryingMachine")
+        score += evaluate(formula, "AbruptVaryingMachine")
+    print("{} => {}".format(formula, score))
+    exit(score)
+
+
+def evaluate(formula, policy_name, T=5000):
     Timer.start("main")
     pm = PolicyManager()
     mm = MachineManager()
-    mm.use("SlowVaryingMachine")
+    mm.use(policy_name)
     h = History()
 
     # Deteremine dynamic oracle.
@@ -25,8 +29,7 @@ def main():
 
     h.reset()
     pm.use("GeneticAlgorithmPolicy", mm.get_num_arms())
-    formula = sys.argv[1].strip("\'")
-    pm.set_params(formula)
+    pm.set_params({"eq_str": formula})
 
     # Loop getting arm, playing machine, saving reward
     for t in range(1, T):
@@ -37,8 +40,7 @@ def main():
 
     # Print results of run
     Timer.stop("main")
-    print("{} => {}".format(formula, h.get_reward()))
-    exit(h.get_reward())
+    return h.get_reward()
 
 
 if __name__ == "__main__":

@@ -7,15 +7,14 @@ class GeneticAlgorithmPolicy(BasePolicy):
         self.num_arms = num_arms
         self.a = [1] * self.num_arms
         self.b = [1] * self.num_arms
-        self.eq_str = "0"
+        self.params = {
+            "eq_str": "0",
+        }
 
     def set_params(self, params):
-        self.eq_str = params
+        self.params.update(params)
 
     def get_arm(self, t):
-        a = self.a
-        b = self.b
-        n = self.a + self.b
         best_value = 0
         best_arm = 0
         for arm_id in range(self.num_arms):
@@ -39,7 +38,7 @@ class GeneticAlgorithmPolicy(BasePolicy):
 
     def __evaluate(self, a, b, n, t):
         try:
-            return eval(self.eq_str)
+            return eval(self.params["eq_str"])
         except:
             return 1
 
