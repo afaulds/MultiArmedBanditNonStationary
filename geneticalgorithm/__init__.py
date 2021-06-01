@@ -31,7 +31,7 @@ import sys
 import time
 from func_timeout import func_timeout, FunctionTimedOut
 import matplotlib.pyplot as plt
-from multiprocessing import Pool
+from multiprocessing import Pool, Process, Manager
 
 ###############################################################################
 ###############################################################################
@@ -138,7 +138,7 @@ class geneticalgorithm():
         #############################################################
         #dimension
 
-        self.dim=int(dimension)
+        self.dim = int(dimension)
 
         #############################################################
         # input variable type
@@ -150,31 +150,24 @@ class geneticalgorithm():
         # input variables' type (MIXED)
 
         if variable_type_mixed is None:
-
             if variable_type=='real':
                 self.var_type=np.array([['real']]*self.dim)
             else:
                 self.var_type=np.array([['int']]*self.dim)
-
-
         else:
-            assert (type(variable_type_mixed).__module__=='numpy'),\
+            assert(type(variable_type_mixed).__module__=='numpy'),\
             "\n variable_type must be numpy array"
-            assert (len(variable_type_mixed) == self.dim), \
+            assert(len(variable_type_mixed) == self.dim), \
             "\n variable_type must have a length equal dimension."
-
             for i in variable_type_mixed:
                 assert (i=='real' or i=='int'),\
                 "\n variable_type_mixed is either 'int' or 'real' "+\
                 "ex:['int','real','real']"+\
                 "\n for 'boolean' use 'int' and specify boundary as [0,1]"
-
-
             self.var_type=variable_type_mixed
+
         #############################################################
         # input variables' boundaries
-
-
         if variable_type!='bool' or type(variable_type_mixed).__module__=='numpy':
 
             assert (type(variable_boundaries).__module__=='numpy'),\
@@ -182,7 +175,6 @@ class geneticalgorithm():
 
             assert (len(variable_boundaries)==self.dim),\
             "\n variable_boundaries must have a length equal dimension"
-
 
             for i in variable_boundaries:
                 assert (len(i) == 2), \
@@ -195,7 +187,7 @@ class geneticalgorithm():
 
         #############################################################
         #Timeout
-        self.funtimeout=float(function_timeout)
+        self.funtimeout = float(function_timeout)
         #############################################################
         #convergence_curve
         if convergence_curve == True:
@@ -273,6 +265,8 @@ class geneticalgorithm():
         self.integers = np.where(self.var_type=='int')[0]
         self.reals = np.where(self.var_type=='real')[0]
 
+        self.cache = {}
+
     def init_population(self):
         # Initialize population
         self.pop = np.array([np.zeros(self.dim + 1)]*self.pop_size)
@@ -283,7 +277,7 @@ class geneticalgorithm():
         with Pool(5) as p:
             self.pop = np.array(p.map(self.init_individual, range(0, self.pop_size)))
 
-    def init_individual(self, p):
+    def init_individual(self, k):
         for i in self.integers:
             self.var[i] = np.random.randint(self.var_bound[i][0],\
                     self.var_bound[i][1]+1)
@@ -521,7 +515,10 @@ class geneticalgorithm():
 
 ###############################################################################
     def evaluate(self):
-        return self.f(self.temp)
+        id = hash(frozenset(self.temp.tolist()))
+        if id not in self.cache:
+            self.cache[id] = self.f(self.temp)
+        return self.cache[id]
 
 ###############################################################################
     def sim(self,X):

@@ -1,6 +1,5 @@
 import numpy as np
 from geneticalgorithm import geneticalgorithm as ga
-import json
 import os
 
 
@@ -19,14 +18,12 @@ eq_parts = {
     11: ")",
     12: " ",
 }
-cache = {}
-args = None
 
 
 def main():
     ga_param = {
-        'max_num_iteration': None,
-        'population_size':1000,
+        'max_num_iteration': 1000,
+        'population_size':10000,
         'mutation_probability':0.1,
         'elit_ratio': 0.01,
         'crossover_probability': 0.5,
@@ -70,13 +67,11 @@ def mab_run(eq_encoded):
         eval(formula)
     except:
         return 0
-
     # Calculate MAB result.
     # Cache results for same formula to speed up results
-    if formula not in cache:
-        num = os.system("python mab_ga.py '{}'".format(formula))
-        cache[formula] = -int(num)
-    return cache[formula]
+    num = -int(os.popen("python mab_ga.py '{}'".format(formula)).read())
+    print("{} => {}".format(formula, num))
+    return num
 
 
 if __name__ == "__main__":

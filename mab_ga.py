@@ -11,12 +11,10 @@ def main():
     if score > 3000:
         score += evaluate(formula, "FastVaryingMachine")
         score += evaluate(formula, "AbruptVaryingMachine")
-    print("{} => {}".format(formula, score))
-    exit(score)
+    print(score)
 
 
 def evaluate(formula, policy_name, T=5000):
-    Timer.start("main")
     pm = PolicyManager()
     mm = MachineManager()
     mm.use(policy_name)
@@ -39,7 +37,6 @@ def evaluate(formula, policy_name, T=5000):
         h.store(t, arm_id, reward)
 
     # Print results of run
-    Timer.stop("main")
     return h.get_reward()
 
 
