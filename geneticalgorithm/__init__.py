@@ -31,7 +31,6 @@ import sys
 import time
 from func_timeout import func_timeout, FunctionTimedOut
 import matplotlib.pyplot as plt
-from multiprocessing import Pool, Process, Manager
 
 ###############################################################################
 ###############################################################################
@@ -274,8 +273,8 @@ class geneticalgorithm():
         self.var = np.zeros(self.dim)
 
         # Create random population and evaluate
-        with Pool(5) as p:
-            self.pop = np.array(p.map(self.init_individual, range(0, self.pop_size)))
+        for p in range(0, self.pop_size):
+            self.pop[p] = self.init_individual(p)
 
     def init_individual(self, k):
         for i in self.integers:
@@ -292,13 +291,10 @@ class geneticalgorithm():
 
     def new_population(self):
         # Create random population and evaluate
-        with Pool(5) as p:
-            pairs = p.map(self.new_individual, range(self.parent_size, self.pop_size, 2))
-        i = 0
         for k in range(self.parent_size, self.pop_size, 2):
-            self.pop[k] = pairs[i][0].copy()
-            self.pop[k+1] = pairs[i][1].copy()
-            i += 1
+            pairs = self.new_individual(k)
+            self.pop[k] = pairs[0].copy()
+            self.pop[k+1] = pairs[1].copy()
 
     def new_individual(self, k):
         r1 = np.random.randint(0, self.par_count)

@@ -8,9 +8,17 @@ from utils import Timer
 def main():
     formula = sys.argv[1].strip("\'")
     score = evaluate(formula, "SlowVaryingMachine")
+    # print("SlowVaryingMachine {}".format(score))
     if score > 3000:
-        score += evaluate(formula, "FastVaryingMachine")
-        score += evaluate(formula, "AbruptVaryingMachine")
+        score2 = evaluate(formula, "FastVaryingMachine")
+        score += score2
+        # print("FastVaryingMachine {}".format(score2))
+        score3 = evaluate(formula, "AbruptVaryingMachine")
+        score += score3
+        # print("AbruptVaryingMachine {}".format(score3))
+        score4 = evaluate(formula, "AdversarialMachine")
+        score += score4
+        # print("AdversarialMachine {}".format(score4))
     print(score)
 
 
