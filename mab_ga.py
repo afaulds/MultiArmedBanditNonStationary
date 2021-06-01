@@ -6,19 +6,30 @@ from utils import Timer
 
 
 def main():
+    if len(sys.argv) <= 1:
+        print("Supply formula for first argument. (i.e. 'x-a')")
+        return
     formula = sys.argv[1].strip("\'")
+    if len(sys.argv) == 3 and sys.argv[2] == "--show":
+        show_scores = True
+    else:
+        show_scores = False
     score = evaluate(formula, "SlowVaryingMachine")
-    # print("SlowVaryingMachine {}".format(score))
+    if show_scores:
+        print("SlowVaryingMachine {}".format(score))
     if score > 3000:
         score2 = evaluate(formula, "FastVaryingMachine")
         score += score2
-        # print("FastVaryingMachine {}".format(score2))
+        if show_scores:
+            print("FastVaryingMachine {}".format(score2))
         score3 = evaluate(formula, "AbruptVaryingMachine")
         score += score3
-        # print("AbruptVaryingMachine {}".format(score3))
+        if show_scores:
+            print("AbruptVaryingMachine {}".format(score3))
         score4 = evaluate(formula, "AdversarialMachine")
         score += score4
-        # print("AdversarialMachine {}".format(score4))
+        if show_scores:
+            print("AdversarialMachine {}".format(score4))
     print(score)
 
 

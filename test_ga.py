@@ -1,4 +1,5 @@
 from geneticalgorithm import geneticalgorithm
+import json
 import numpy as np
 import os
 import sys
@@ -25,7 +26,7 @@ cache = {}
 def main():
     ga_param = {
         'max_num_iteration': 1000,
-        'population_size':10000,
+        'population_size':1000,
         'mutation_probability':0.1,
         'elit_ratio': 0.01,
         'crossover_probability': 0.5,
@@ -40,10 +41,13 @@ def main():
         variable_type="int",
         variable_boundaries=varbound,
         function_timeout=50,
+        convergence_curve=False,
         algorithm_parameters=ga_param
     )
+    model.set_pop(get_solutions())
     output_dict = model.run()
     solution = model.output_dict["variable"]
+    add_solution(solution.tolist())
 
 
 def mab_run(eq_encoded):
@@ -103,6 +107,19 @@ def convert_recursive(encoded_str, pos=0):
         eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
         return ('{}{}{}'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
 
+def get_solutions():
+    if os.path.exists("solutions.json"):
+        with open("solutions.json", "r") as infile:
+            solutions = json.loads(infile.read())
+    else:
+        solutions = []
+    return solutions
+
+def add_solution(solution):
+    solutions = get_solutions()
+    solutions.append(solution)
+    with open("solutions.json", "w") as outfile:
+        outfile.write(json.dumps(solutions))
 
 if __name__ == "__main__":
     main()

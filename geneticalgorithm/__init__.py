@@ -137,7 +137,7 @@ class geneticalgorithm():
         #############################################################
         #dimension
 
-        self.dim = int(dimension)
+        self.dim=int(dimension)
 
         #############################################################
         # input variable type
@@ -149,24 +149,31 @@ class geneticalgorithm():
         # input variables' type (MIXED)
 
         if variable_type_mixed is None:
+
             if variable_type=='real':
                 self.var_type=np.array([['real']]*self.dim)
             else:
                 self.var_type=np.array([['int']]*self.dim)
+
+
         else:
-            assert(type(variable_type_mixed).__module__=='numpy'),\
+            assert (type(variable_type_mixed).__module__=='numpy'),\
             "\n variable_type must be numpy array"
-            assert(len(variable_type_mixed) == self.dim), \
+            assert (len(variable_type_mixed) == self.dim), \
             "\n variable_type must have a length equal dimension."
+
             for i in variable_type_mixed:
                 assert (i=='real' or i=='int'),\
                 "\n variable_type_mixed is either 'int' or 'real' "+\
                 "ex:['int','real','real']"+\
                 "\n for 'boolean' use 'int' and specify boundary as [0,1]"
-            self.var_type=variable_type_mixed
 
+
+            self.var_type=variable_type_mixed
         #############################################################
         # input variables' boundaries
+
+
         if variable_type!='bool' or type(variable_type_mixed).__module__=='numpy':
 
             assert (type(variable_boundaries).__module__=='numpy'),\
@@ -174,6 +181,7 @@ class geneticalgorithm():
 
             assert (len(variable_boundaries)==self.dim),\
             "\n variable_boundaries must have a length equal dimension"
+
 
             for i in variable_boundaries:
                 assert (len(i) == 2), \
@@ -186,35 +194,35 @@ class geneticalgorithm():
 
         #############################################################
         #Timeout
-        self.funtimeout = float(function_timeout)
+        self.funtimeout=float(function_timeout)
         #############################################################
         #convergence_curve
-        if convergence_curve == True:
-            self.convergence_curve = True
+        if convergence_curve==True:
+            self.convergence_curve=True
         else:
-            self.convergence_curve = False
+            self.convergence_curve=False
         #############################################################
         #progress_bar
-        if progress_bar == True:
-            self.progress_bar = True
+        if progress_bar==True:
+            self.progress_bar=True
         else:
-            self.progress_bar = False
+            self.progress_bar=False
         #############################################################
         #############################################################
         # input algorithm's parameters
 
         self.param=algorithm_parameters
 
-        self.pop_size=int(self.param['population_size'])
+        self.pop_s=int(self.param['population_size'])
 
-        assert(self.param['parents_portion'] <= 1\
-                and self.param['parents_portion'] >= 0),\
+        assert (self.param['parents_portion']<=1\
+                and self.param['parents_portion']>=0),\
         "parents_portion must be in range [0,1]"
 
-        self.parent_size = int(self.param['parents_portion'] * self.pop_size)
-        trl = self.pop_size - self.parent_size
+        self.par_s=int(self.param['parents_portion']*self.pop_s)
+        trl=self.pop_s-self.par_s
         if trl % 2 != 0:
-            self.parent_size += 1
+            self.par_s+=1
 
         self.prob_mut=self.param['mutation_probability']
 
@@ -229,185 +237,190 @@ class geneticalgorithm():
         assert (self.param['elit_ratio']<=1 and self.param['elit_ratio']>=0),\
         "elit_ratio must be in range [0,1]"
 
-        trl=self.pop_size*self.param['elit_ratio']
+        trl=self.pop_s*self.param['elit_ratio']
         if trl<1 and self.param['elit_ratio']>0:
             self.num_elit=1
         else:
             self.num_elit=int(trl)
 
-        assert(self.parent_size >= self.num_elit), \
+        assert(self.par_s>=self.num_elit), \
         "\n number of parents must be greater than number of elits"
 
         if self.param['max_num_iteration']==None:
-            self.iterate = 0
+            self.iterate=0
             for i in range (0,self.dim):
                 if self.var_type[i]=='int':
-                    self.iterate += (self.var_bound[i][1]-self.var_bound[i][0])*self.dim*(100/self.pop_size)
+                    self.iterate+=(self.var_bound[i][1]-self.var_bound[i][0])*self.dim*(100/self.pop_s)
                 else:
-                    self.iterate += (self.var_bound[i][1]-self.var_bound[i][0])*50*(100/self.pop_size)
-            self.iterate = int(self.iterate)
-            if (self.iterate*self.pop_size) > 10000000:
-                self.iterate = 10000000 / self.pop_size
+                    self.iterate+=(self.var_bound[i][1]-self.var_bound[i][0])*50*(100/self.pop_s)
+            self.iterate=int(self.iterate)
+            if (self.iterate*self.pop_s)>10000000:
+                self.iterate=10000000/self.pop_s
         else:
-            self.iterate = int(self.param['max_num_iteration'])
+            self.iterate=int(self.param['max_num_iteration'])
 
-        self.c_type = self.param['crossover_type']
-        assert (self.c_type == 'uniform' or self.c_type == 'one_point' or\
-                self.c_type == 'two_point'),\
+        self.c_type=self.param['crossover_type']
+        assert (self.c_type=='uniform' or self.c_type=='one_point' or\
+                self.c_type=='two_point'),\
         "\n crossover_type must 'uniform', 'one_point', or 'two_point' Enter string"
 
-        self.stop_mniwi = False
-        if self.param['max_iteration_without_improv'] == None:
-            self.mniwi = self.iterate + 1
+
+        self.stop_mniwi=False
+        if self.param['max_iteration_without_improv']==None:
+            self.mniwi=self.iterate+1
         else:
-            self.mniwi = int(self.param['max_iteration_without_improv'])
-        self.integers = np.where(self.var_type=='int')[0]
-        self.reals = np.where(self.var_type=='real')[0]
+            self.mniwi=int(self.param['max_iteration_without_improv'])
 
-        self.cache = {}
+        self.integers=np.where(self.var_type=='int')
+        self.reals=np.where(self.var_type=='real')
+        self.pop=np.array([np.zeros(self.dim+1)]*self.pop_s)
+        self.start_pop_size = 0
 
-    def init_population(self):
-        # Initialize population
-        self.pop = np.array([np.zeros(self.dim + 1)]*self.pop_size)
-        self.solo = np.zeros(self.dim + 1)
-        self.var = np.zeros(self.dim)
 
-        # Create random population and evaluate
-        for p in range(0, self.pop_size):
-            self.pop[p] = self.init_individual(p)
+    def set_pop(self, starting_pop):
+        self.start_pop_size = len(starting_pop)
+        solo = np.zeros(self.dim+1)
+        for i in range(self.start_pop_size):
+            for j in range(len(starting_pop[i])):
+                solo[j] = starting_pop[i][j]
+            obj = self.sim(starting_pop[i])
+            solo[self.dim] = obj
+            self.pop[i] = solo.copy()
 
-    def init_individual(self, k):
-        for i in self.integers:
-            self.var[i] = np.random.randint(self.var_bound[i][0],\
-                    self.var_bound[i][1]+1)
-            self.solo[i] = self.var[i].copy()
-        for i in self.reals:
-            self.var[i] = self.var_bound[i][0]+np.random.random()*\
-            (self.var_bound[i][1]-self.var_bound[i][0])
-            self.solo[i] = self.var[i].copy()
-        obj = self.sim(self.var)
-        self.solo[self.dim] = obj
-        return self.solo.copy()
-
-    def new_population(self):
-        # Create random population and evaluate
-        for k in range(self.parent_size, self.pop_size, 2):
-            pairs = self.new_individual(k)
-            self.pop[k] = pairs[0].copy()
-            self.pop[k+1] = pairs[1].copy()
-
-    def new_individual(self, k):
-        r1 = np.random.randint(0, self.par_count)
-        r2 = np.random.randint(0, self.par_count)
-        pvar1 = self.ef_par[r1,: self.dim].copy()
-        pvar2 = self.ef_par[r2,: self.dim].copy()
-
-        ch = self.cross(pvar1, pvar2, self.c_type)
-        ch1 = ch[0].copy()
-        ch2 = ch[1].copy()
-
-        ch1 = self.mutate(ch1)
-        ch2 = self.mutmidle(ch2, pvar1, pvar2)
-        solo1 = np.zeros(self.dim + 1)
-        solo1[: self.dim] = ch1.copy()
-        obj = self.sim(ch1)
-        solo1[self.dim] = obj
-
-        solo2 = np.zeros(self.dim + 1)
-        solo2[:self.dim] = ch2.copy()
-        obj = self.sim(ch2)
-        solo2[self.dim] = obj
-
-        return (solo1, solo2)
-
-    def run(self):
         #############################################################
-        self.init_population()
+    def run(self):
+
+
+        #############################################################
+        # Initial Population
+
+        solo=np.zeros(self.dim+1)
+        var=np.zeros(self.dim)
+
+        for p in range(self.start_pop_size, self.pop_s):
+
+            for i in self.integers[0]:
+                var[i]=np.random.randint(self.var_bound[i][0],\
+                        self.var_bound[i][1]+1)
+                solo[i]=var[i].copy()
+            for i in self.reals[0]:
+                var[i]=self.var_bound[i][0]+np.random.random()*\
+                (self.var_bound[i][1]-self.var_bound[i][0])
+                solo[i]=var[i].copy()
+
+
+            obj=self.sim(var)
+            solo[self.dim]=obj
+            self.pop[p]=solo.copy()
+
+        #############################################################
 
         #############################################################
         # Report
-        self.report = []
-        self.test_obj = self.pop[0, self.dim]
-        self.best_variable = self.pop[0, :self.dim].copy()
-        self.best_function = self.pop[0, self.dim]
-
+        self.report=[]
+        self.test_obj=obj
+        self.best_variable=var.copy()
+        self.best_function=obj
         ##############################################################
-        t = 1
-        counter = 0
-        while t <= self.iterate:
-            if self.progress_bar == True:
-                self.progress(t, self.iterate, status="GA is running...")
+
+        t=1
+        counter=0
+        while t<=self.iterate:
+
+            if self.progress_bar==True:
+                self.progress(t,self.iterate,status="GA is running...")
             #############################################################
             #Sort
             self.pop = self.pop[self.pop[:,self.dim].argsort()]
 
-            if self.pop[0,self.dim] < self.best_function:
+
+
+            if self.pop[0,self.dim]<self.best_function:
                 counter=0
-                self.best_function = self.pop[0,self.dim].copy()
-                self.best_variable = self.pop[0,: self.dim].copy()
+                self.best_function=self.pop[0,self.dim].copy()
+                self.best_variable=self.pop[0,: self.dim].copy()
             else:
-                counter += 1
+                counter+=1
             #############################################################
             # Report
-            self.report.append(self.pop[0, self.dim])
+
+            self.report.append(self.pop[0,self.dim])
 
             ##############################################################
             # Normalizing objective function
-            normobj = np.zeros(self.pop_size)
 
-            minobj = self.pop[0, self.dim]
-            if minobj < 0:
-                normobj = self.pop[:, self.dim] + abs(minobj)
+            normobj=np.zeros(self.pop_s)
+
+            minobj=self.pop[0,self.dim]
+            if minobj<0:
+                normobj=self.pop[:,self.dim]+abs(minobj)
 
             else:
-                normobj = self.pop[:, self.dim].copy()
+                normobj=self.pop[:,self.dim].copy()
 
-            maxnorm = np.amax(normobj)
-            normobj = maxnorm - normobj + 1
+            maxnorm=np.amax(normobj)
+            normobj=maxnorm-normobj+1
 
             #############################################################
             # Calculate probability
 
-            sum_normobj = np.sum(normobj)
-            prob = np.zeros(self.pop_size)
-            prob = normobj / sum_normobj
-            cumprob = np.cumsum(prob)
+            sum_normobj=np.sum(normobj)
+            prob=np.zeros(self.pop_s)
+            prob=normobj/sum_normobj
+            cumprob=np.cumsum(prob)
 
             #############################################################
             # Select parents
-            par = np.array([np.zeros(self.dim+1)] * self.parent_size)
+            par=np.array([np.zeros(self.dim+1)]*self.par_s)
 
-            for k in range(0, self.num_elit):
-                par[k] = self.pop[k].copy()
+            for k in range(0,self.num_elit):
+                par[k]=self.pop[k].copy()
+            for k in range(self.num_elit,self.par_s):
+                index=np.searchsorted(cumprob,np.random.random())
+                par[k]=self.pop[index].copy()
 
-            for k in range(self.num_elit, self.parent_size):
-                index = np.searchsorted(cumprob, np.random.random())
-                par[k] = self.pop[index].copy()
+            ef_par_list=np.array([False]*self.par_s)
+            par_count=0
+            while par_count==0:
+                for k in range(0,self.par_s):
+                    if np.random.random()<=self.prob_cross:
+                        ef_par_list[k]=True
+                        par_count+=1
 
-            ef_par_list = np.array([False]*self.parent_size)
-            self.par_count = 0
-            while self.par_count == 0:
-                for k in range(0,self.parent_size):
-                    if np.random.random() <= self.prob_cross:
-                        ef_par_list[k] = True
-                        self.par_count += 1
-
-            self.ef_par = par[ef_par_list].copy()
+            ef_par=par[ef_par_list].copy()
 
             #############################################################
             #New generation
-            self.pop = np.array([np.zeros(self.dim+1)]*self.pop_size)
+            self.pop=np.array([np.zeros(self.dim+1)]*self.pop_s)
 
-            for k in range(0,self.parent_size):
-                self.pop[k] = par[k].copy()
+            for k in range(0,self.par_s):
+                self.pop[k]=par[k].copy()
 
-            self.new_population()
+            for k in range(self.par_s, self.pop_s, 2):
+                r1=np.random.randint(0,par_count)
+                r2=np.random.randint(0,par_count)
+                pvar1=ef_par[r1,: self.dim].copy()
+                pvar2=ef_par[r2,: self.dim].copy()
 
+                ch=self.cross(pvar1,pvar2,self.c_type)
+                ch1=ch[0].copy()
+                ch2=ch[1].copy()
+
+                ch1=self.mut(ch1)
+                ch2=self.mutmidle(ch2,pvar1,pvar2)
+                solo[: self.dim]=ch1.copy()
+                obj=self.sim(ch1)
+                solo[self.dim]=obj
+                self.pop[k]=solo.copy()
+                solo[: self.dim]=ch2.copy()
+                obj=self.sim(ch2)
+                solo[self.dim]=obj
+                self.pop[k+1]=solo.copy()
         #############################################################
-            t += 1
+            t+=1
             if counter > self.mniwi:
                 self.pop = self.pop[self.pop[:,self.dim].argsort()]
-                if self.pop[0,self.dim] >= self.best_function:
+                if self.pop[0,self.dim]>=self.best_function:
                     t=self.iterate
                     if self.progress_bar==True:
                         self.progress(t,self.iterate,status="GA is running...")
@@ -419,13 +432,18 @@ class geneticalgorithm():
         #Sort
         self.pop = self.pop[self.pop[:,self.dim].argsort()]
 
-        if self.pop[0, self.dim] < self.best_function:
-            self.best_function = self.pop[0,self.dim].copy()
-            self.best_variable = self.pop[0,: self.dim].copy()
+        if self.pop[0,self.dim]<self.best_function:
 
+            self.best_function=self.pop[0,self.dim].copy()
+            self.best_variable=self.pop[0,: self.dim].copy()
         #############################################################
         # Report
+
         self.report.append(self.pop[0,self.dim])
+
+
+
+
         self.output_dict={'variable': self.best_variable, 'function':\
                           self.best_function}
         if self.progress_bar==True:
@@ -445,77 +463,86 @@ class geneticalgorithm():
         if self.stop_mniwi==True:
             sys.stdout.write('\nWarning: GA is terminated due to the'+\
                              ' maximum number of iterations without improvement was met!')
-
 ##############################################################################
-    def cross(self, x, y, c_type):
-        ofs1 = x.copy()
-        ofs2 = y.copy()
-        if c_type == 'one_point':
-            ran = np.random.randint(0, self.dim)
-            for i in range(0, ran):
-                ofs1[i] = y[i].copy()
-                ofs2[i] = x[i].copy()
-        if c_type == 'two_point':
-            ran1 = np.random.randint(0, self.dim)
-            ran2 = np.random.randint(ran1, self.dim)
+##############################################################################
+    def cross(self,x,y,c_type):
+
+        ofs1=x.copy()
+        ofs2=y.copy()
+
+
+        if c_type=='one_point':
+            ran=np.random.randint(0,self.dim)
+            for i in range(0,ran):
+                ofs1[i]=y[i].copy()
+                ofs2[i]=x[i].copy()
+
+        if c_type=='two_point':
+
+            ran1=np.random.randint(0,self.dim)
+            ran2=np.random.randint(ran1,self.dim)
+
             for i in range(ran1,ran2):
                 ofs1[i]=y[i].copy()
                 ofs2[i]=x[i].copy()
-        if c_type == 'uniform':
+
+        if c_type=='uniform':
+
             for i in range(0, self.dim):
-                ran = np.random.random()
-                if ran < 0.5:
-                    ofs1[i] = y[i].copy()
-                    ofs2[i] = x[i].copy()
+                ran=np.random.random()
+                if ran <0.5:
+                    ofs1[i]=y[i].copy()
+                    ofs2[i]=x[i].copy()
+
         return np.array([ofs1,ofs2])
-
 ###############################################################################
-    def mutate(self, x):
-        for i in self.integers:
-            ran = np.random.random()
-            if ran < self.prob_mut:
-                x[i] = np.random.randint(self.var_bound[i][0],\
-                 self.var_bound[i][1]+1)
-        for i in self.reals:
-            ran = np.random.random()
-            if ran < self.prob_mut:
-               x[i] = self.var_bound[i][0]+np.random.random()*\
-                (self.var_bound[i][1]-self.var_bound[i][0])
-        return x
 
-###############################################################################
-    def mutmidle(self, x, p1, p2):
-        for i in self.integers:
-            ran = np.random.random()
-            if ran < self.prob_mut:
-                if p1[i]<p2[i]:
-                    x[i] = np.random.randint(p1[i],p2[i])
-                elif p1[i]>p2[i]:
-                    x[i] = np.random.randint(p2[i],p1[i])
-                else:
-                    x[i] = np.random.randint(
-                        self.var_bound[i][0],
-                        self.var_bound[i][1] + 1
-                    )
-        for i in self.reals:
+    def mut(self,x):
+
+        for i in self.integers[0]:
             ran=np.random.random()
             if ran < self.prob_mut:
-                if p1[i] < p2[i]:
-                    x[i] = p1[i] + np.random.random() * (p2[i] - p1[i])
-                elif p1[i] > p2[i]:
-                    x[i] = p2[i] + np.random.random() * (p1[i] - p2[i])
-                else:
-                    x[i] = self.var_bound[i][0] + np.random.random() * \
-                        (self.var_bound[i][1] - self.var_bound[i][0])
-        return x
 
+                x[i]=np.random.randint(self.var_bound[i][0],\
+                 self.var_bound[i][1]+1)
+
+
+
+        for i in self.reals[0]:
+            ran=np.random.random()
+            if ran < self.prob_mut:
+
+               x[i]=self.var_bound[i][0]+np.random.random()*\
+                (self.var_bound[i][1]-self.var_bound[i][0])
+
+        return x
+###############################################################################
+    def mutmidle(self, x, p1, p2):
+        for i in self.integers[0]:
+            ran=np.random.random()
+            if ran < self.prob_mut:
+                if p1[i]<p2[i]:
+                    x[i]=np.random.randint(p1[i],p2[i])
+                elif p1[i]>p2[i]:
+                    x[i]=np.random.randint(p2[i],p1[i])
+                else:
+                    x[i]=np.random.randint(self.var_bound[i][0],\
+                 self.var_bound[i][1]+1)
+
+        for i in self.reals[0]:
+            ran=np.random.random()
+            if ran < self.prob_mut:
+                if p1[i]<p2[i]:
+                    x[i]=p1[i]+np.random.random()*(p2[i]-p1[i])
+                elif p1[i]>p2[i]:
+                    x[i]=p2[i]+np.random.random()*(p1[i]-p2[i])
+                else:
+                    x[i]=self.var_bound[i][0]+np.random.random()*\
+                (self.var_bound[i][1]-self.var_bound[i][0])
+        return x
 ###############################################################################
     def evaluate(self):
-        id = hash(frozenset(self.temp.tolist()))
-        if id not in self.cache:
-            self.cache[id] = self.f(self.temp)
-        return self.cache[id]
-
+        return self.f(self.temp)
 ###############################################################################
     def sim(self,X):
         self.temp=X.copy()
@@ -538,7 +565,7 @@ class geneticalgorithm():
 
         sys.stdout.write('\r%s %s%s %s' % (bar, percents, '%', status))
         sys.stdout.flush()
+###############################################################################
+###############################################################################
 
-###############################################################################
-###############################################################################
 
