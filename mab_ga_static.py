@@ -6,6 +6,7 @@ from utils import Timer
 
 
 def main():
+    num_runs = 10
     if len(sys.argv) <= 1:
         print("Supply formula for first argument. (i.e. 'x-a')")
         return
@@ -14,11 +15,14 @@ def main():
         show_scores = True
     else:
         show_scores = False
-    score = 0
-    score += evaluate(formula, "StaticMachine", T=50) / 3.0
-    score += evaluate(formula, "StaticMachine", T=500) / 3.0
-    score += evaluate(formula, "StaticMachine", T=5000) / 3.0
-    print(score)
+    total_score = 0
+    for i in range(num_runs):
+        score = evaluate(formula, "StaticMachine", T=5000)
+        total_score += score
+        if score > 0.95:
+            print(num_runs)
+            return
+    print(total_score)
 
 
 def evaluate(formula, policy_name, T=5000):

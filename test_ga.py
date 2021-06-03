@@ -3,9 +3,11 @@ import json
 import numpy as np
 import os
 import sys
+import warnings
 
 
-equation_size = 40
+invalid_equation_score = 1000000000
+equation_size = 20
 eq_parts = {
     1: "a",
     2: "b",
@@ -24,6 +26,16 @@ eq_parts = {
     15: "R", # np.random.random_sample
     16: "N", # min
     17: "M", # max
+
+    18: "1",
+    19: "2",
+    20: "3",
+    21: "4",
+    22: "5",
+    23: "6",
+    24: "7",
+    25: "8",
+    26: "9",
 }
 cache = {}
 
@@ -42,8 +54,8 @@ def eval_best():
 
 def ga_run():
     ga_param = {
-        'max_num_iteration': 1000,
-        'population_size':1000,
+        'max_num_iteration': 100,
+        'population_size':10,
         'mutation_probability':0.1,
         'elit_ratio': 0.01,
         'crossover_probability': 0.5,
@@ -74,10 +86,12 @@ def mab_run(eq_encoded):
     n = 7
     t = 3
     formula = create_equation(eq_encoded)
+    warnings.filterwarnings("ignore", category=RuntimeWarning)
     try:
         eval(formula)
     except:
-        return 0
+        return invalid_equation_score
+
     # Calculate MAB result.
     # Cache results for same formula to speed up results
     if formula not in cache:
@@ -104,7 +118,7 @@ def convert_recursive(encoded_str, pos=0):
         return ("", pos+1)
 
     # Variables
-    if encoded_str[pos] in ['a', 'b', 't', 'n']:
+    if encoded_str[pos] in ['a', 'b', 't', 'n', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
         return (encoded_str[pos], pos+1)
 
     if encoded_str[pos] == 'R':
@@ -135,15 +149,15 @@ def convert_recursive(encoded_str, pos=0):
     elif encoded_str[pos] == 'B':
         eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
         eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
-        return ('np.random.beta({},{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+        return ('np.random.beta({},{})'.format(eq1_str, eq2_str), next_pos)
     elif encoded_str[pos] == 'M':
         eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
         eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
-        return ('max({},{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+        return ('max({},{})'.format(eq1_str, eq2_str), next_pos)
     elif encoded_str[pos] == 'N':
         eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
         eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
-        return ('max({},{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+        return ('max({},{})'.format(eq1_str, eq2_str), next_pos)
 
 
 def get_solutions():

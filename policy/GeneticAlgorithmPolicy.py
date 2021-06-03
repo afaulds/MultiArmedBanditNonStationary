@@ -1,5 +1,6 @@
 from policy.BasePolicy import BasePolicy
 import numpy as np
+import warnings
 
 
 class GeneticAlgorithmPolicy(BasePolicy):
@@ -15,6 +16,7 @@ class GeneticAlgorithmPolicy(BasePolicy):
         self.params.update(params)
 
     def get_arm(self, t):
+        tie_breaker = 0.00000001 * np.random.random_sample()
         best_value = 0
         best_arm = 0
         for arm_id in range(self.num_arms):
@@ -23,8 +25,8 @@ class GeneticAlgorithmPolicy(BasePolicy):
                 self.b[arm_id],
                 self.a[arm_id] + self.b[arm_id],
                 t
-            )
-            if value > best_value:
+            ) + tie_breaker
+            if value >= best_value:
                 best_value = value
                 best_arm = arm_id
         return best_arm
@@ -37,6 +39,7 @@ class GeneticAlgorithmPolicy(BasePolicy):
         return "GeneticAlgorithm"
 
     def __evaluate(self, a, b, n, t):
+        warnings.filterwarnings("ignore", category=RuntimeWarning)
         try:
             return eval(self.params["eq_str"])
         except:
