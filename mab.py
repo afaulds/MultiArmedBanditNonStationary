@@ -81,6 +81,11 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.992,
                 "period": 250,
             })
+        elif policy_name == "GeneticAlgorithmPolicy":
+            pm.set_params({
+                #"eq_str": "t-b-2*np.log(t)"
+                "eq_str": "(np.sqrt((a+b))/b)"
+            })
     if machine_name == "FastVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
@@ -98,6 +103,11 @@ def set_optimal_params(machine_name, policy_name, pm):
             pm.set_params({
                 "gamma": 0.951,
                 "period": 100,
+            })
+        elif policy_name == "GeneticAlgorithmPolicy":
+            pm.set_params({
+                #"eq_str": "t-b-2*np.log(t)"
+                "eq_str": "(np.sqrt((a+b))/b)"
             })
     elif machine_name == "SlowVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
@@ -117,6 +127,11 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.992,
                 "period": 1000,
             })
+        elif policy_name == "GeneticAlgorithmPolicy":
+            pm.set_params({
+                #"eq_str": "t-b-2*np.log(t)"
+                "eq_str": "(np.sqrt((a+b))/b)"
+            })
     elif machine_name == "StaticMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
@@ -134,6 +149,11 @@ def set_optimal_params(machine_name, policy_name, pm):
             pm.set_params({
                 "gamma": 1.0,
                 "period": 1000,
+            })
+        elif policy_name == "GeneticAlgorithmPolicy":
+            pm.set_params({
+                #"eq_str": "t-b-2*np.log(t)"
+                "eq_str": "(np.sqrt((a+b))/b)"
             })
     elif machine_name == "NonCycleVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
@@ -153,6 +173,11 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.996,
                 "period": 5000,
             })
+        elif policy_name == "GeneticAlgorithmPolicy":
+            pm.set_params({
+                #"eq_str": "t-b-2*np.log(t)"
+                "eq_str": "(np.sqrt((a+b))/b)"
+            })
     elif machine_name == "AdversarialMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
             pm.set_params({
@@ -170,6 +195,11 @@ def set_optimal_params(machine_name, policy_name, pm):
             pm.set_params({
                 "gamma": 0.992,
                 "period": 800,
+            })
+        elif policy_name == "GeneticAlgorithmPolicy":
+            pm.set_params({
+                #"eq_str": "t-b-2*np.log(t)"
+                "eq_str": "(np.sqrt((a+b))/b)"
             })
 
 

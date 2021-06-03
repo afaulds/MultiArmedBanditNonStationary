@@ -22,14 +22,26 @@ def main():
         score += score2
         if show_scores:
             print("FastVaryingMachine {}".format(score2))
+
         score3 = evaluate(formula, "AbruptVaryingMachine")
         score += score3
         if show_scores:
             print("AbruptVaryingMachine {}".format(score3))
+
         score4 = evaluate(formula, "AdversarialMachine")
         score += score4
         if show_scores:
             print("AdversarialMachine {}".format(score4))
+
+        score5 = evaluate(formula, "StaticMachine")
+        score += score5
+        if show_scores:
+            print("StaticMachine {}".format(score5))
+
+        score6 = evaluate(formula, "NonCycleVaryingMachine")
+        score += score6
+        if show_scores:
+            print("NonCycleVaryingMachine {}".format(score6))
     print(score)
 
 

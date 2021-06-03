@@ -24,6 +24,18 @@ cache = {}
 
 
 def main():
+    if len(sys.argv) == 2 and sys.argv[1] == "--show":
+        eval_best()
+    else:
+        ga_run()
+
+def eval_best():
+    solutions = get_solutions()
+    for solution in solutions:
+        mab_run(solution)
+
+
+def ga_run():
     ga_param = {
         'max_num_iteration': 1000,
         'population_size':1000,
@@ -105,15 +117,18 @@ def convert_recursive(encoded_str, pos=0):
     elif encoded_str[pos] in ['+', '-', '*', '/']:
         eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
         eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
-        return ('{}{}{}'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+        return ('({}{}{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+
 
 def get_solutions():
     if os.path.exists("solutions.json"):
         with open("solutions.json", "r") as infile:
             solutions = json.loads(infile.read())
+        solutions = np.unique(solutions, axis=0).tolist()
     else:
         solutions = []
     return solutions
+
 
 def add_solution(solution):
     solutions = get_solutions()
