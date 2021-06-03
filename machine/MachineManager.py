@@ -40,6 +40,9 @@ class MachineManager:
     def oracle(self, t):
         return self.machine.oracle(t)
 
+    def set_num_arms(self, num_arms):
+        return self.machine.set_num_arms(num_arms)
+
     def get_num_arms(self):
         return self.machine.get_num_arms()
 

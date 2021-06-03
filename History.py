@@ -47,6 +47,11 @@ class History:
     def get_reward(self):
         return self.stats["reward_total(time)"][-1]
 
+    def get_normalized_arm_regret(self):
+        z = range(1, len(self.stats["arm(time)"]) + 1)
+        y = np.divide(z - np.cumsum(np.equal(self.oracle["arm(time)"], self.stats["arm(time)"])), z)
+        return y[-1]
+
     def print(self, machine, policy):
         self.__print_stats(machine, policy)
         self.__plot_oracle(machine, policy)

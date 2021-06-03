@@ -14,20 +14,20 @@ class StaticMachine(BaseMachine):
     """
 
     def __init__(self):
-        pass
+        self.payout = []
+        self.set_num_arms(4)
 
     def get_probability(self, t, arm_id):
-        if arm_id == 0:
-            return 0.8
-        elif arm_id == 1:
-            return 0.9
-        elif arm_id == 2:
-            return 0.8
-        elif arm_id == 3:
-            return 0.4
+        return self.payout[arm_id]
+
+    def set_num_arms(self, num_arms):
+        ids = random.shuffle(list(range(num_arms)))
+        self.payout = [0] * num_arms
+        for i in range(num_arms):
+            self.payout[i] = 0.1 + 0.8 * i / num_arms
 
     def get_num_arms(self):
-        return 4
+        return len(self.payout)
 
     def get_name(self):
         return "Static"

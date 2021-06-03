@@ -5,7 +5,6 @@ import os
 import sys
 
 
-np.seterr(all='ignore')#, invalid='ignore')
 equation_size = 40
 eq_parts = {
     1: "a",
@@ -19,6 +18,10 @@ eq_parts = {
     9: "|", # - (negative)
     10: "L", # np.log
     11: "Q", # np.sqrt
+    12: "B", # np.random.beta
+    13: "C", # np.cos
+    14: "S", # np.sin
+    15: "R", # np.random.random_sample
 }
 cache = {}
 
@@ -76,7 +79,7 @@ def mab_run(eq_encoded):
     # Calculate MAB result.
     # Cache results for same formula to speed up results
     if formula not in cache:
-        num = -int(os.popen("python mab_ga.py '{}'".format(formula)).read())
+        num = float(os.popen("python mab_ga_static.py '{}'".format(formula)).read())
         print("{} => {}".format(formula, num))
         cache[formula] = num
     return cache[formula]
@@ -102,6 +105,9 @@ def convert_recursive(encoded_str, pos=0):
     if encoded_str[pos] in ['a', 'b', 't', 'n']:
         return (encoded_str[pos], pos+1)
 
+    if encoded_str[pos] == 'R':
+        return ('np.random.random_sample()', pos+1)
+
     # Unary operators
     elif encoded_str[pos] == '|':
         eq_str, next_pos = convert_recursive(encoded_str, pos+1)
@@ -112,12 +118,22 @@ def convert_recursive(encoded_str, pos=0):
     elif encoded_str[pos] == 'Q':
         eq_str, next_pos = convert_recursive(encoded_str, pos+1)
         return ('np.sqrt({})'.format(eq_str), next_pos)
+    elif encoded_str[pos] == 'C':
+        eq_str, next_pos = convert_recursive(encoded_str, pos+1)
+        return ('np.cos({})'.format(eq_str), next_pos)
+    elif encoded_str[pos] == 'S':
+        eq_str, next_pos = convert_recursive(encoded_str, pos+1)
+        return ('np.sin({})'.format(eq_str), next_pos)
 
     # Binary operators
     elif encoded_str[pos] in ['+', '-', '*', '/']:
         eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
         eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
         return ('({}{}{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+    elif encoded_str[pos] == 'B':
+        eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
+        eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
+        return ('np.random.beta({},{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
 
 
 def get_solutions():
