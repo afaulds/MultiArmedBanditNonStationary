@@ -22,6 +22,8 @@ eq_parts = {
     13: "C", # np.cos
     14: "S", # np.sin
     15: "R", # np.random.random_sample
+    16: "N", # min
+    17: "M", # max
 }
 cache = {}
 
@@ -134,6 +136,14 @@ def convert_recursive(encoded_str, pos=0):
         eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
         eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
         return ('np.random.beta({},{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+    elif encoded_str[pos] == 'M':
+        eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
+        eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
+        return ('max({},{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
+    elif encoded_str[pos] == 'N':
+        eq1_str, next_pos = convert_recursive(encoded_str, pos+1)
+        eq2_str, next_pos = convert_recursive(encoded_str, next_pos)
+        return ('max({},{})'.format(eq1_str, encoded_str[pos], eq2_str), next_pos)
 
 
 def get_solutions():
