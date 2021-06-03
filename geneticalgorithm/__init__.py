@@ -275,6 +275,7 @@ class geneticalgorithm():
         self.reals=np.where(self.var_type=='real')
         self.pop=np.array([np.zeros(self.dim+1)]*self.pop_s)
         self.start_pop_size = 0
+        self.cache = {}
 
 
     def set_pop(self, starting_pop):
@@ -542,7 +543,10 @@ class geneticalgorithm():
         return x
 ###############################################################################
     def evaluate(self):
-        return self.f(self.temp)
+        id = hash(frozenset(self.temp))
+        if id not in self.cache:
+            self.cache[id] = self.f(self.temp)
+        return self.cache[id]
 ###############################################################################
     def sim(self,X):
         self.temp=X.copy()
