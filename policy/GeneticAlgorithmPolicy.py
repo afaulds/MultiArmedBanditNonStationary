@@ -1,6 +1,6 @@
 from policy.BasePolicy import BasePolicy
 import numpy as np
-import warnings
+from gp_shared_operators import *
 
 
 class GeneticAlgorithmPolicy(BasePolicy):
@@ -39,9 +39,5 @@ class GeneticAlgorithmPolicy(BasePolicy):
         return "GeneticAlgorithm"
 
     def __evaluate(self, a, b, n, t):
-        warnings.filterwarnings("ignore", category=RuntimeWarning)
-        try:
-            return eval(self.params["eq_str"])
-        except:
-            return 1
+        return eval(self.params["eq_str"])
 
