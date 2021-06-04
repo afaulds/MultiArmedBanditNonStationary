@@ -3,6 +3,7 @@ from machine import MachineManager
 from policy import PolicyManager
 import sys
 from utils import Timer
+import numpy as np
 
 
 def main():
@@ -15,14 +16,15 @@ def main():
         show_scores = True
     else:
         show_scores = False
-    total_score = 0
+    scores = []
     for i in range(num_runs):
         score = evaluate(formula, "StaticMachine", 1000)
-        total_score += score
-        if score > 0.95:
-            print(num_runs)
+        scores.append(score)
+        if score > 0.99:
+            print(1.0)
             return
-    print(total_score)
+    print(np.mean(scores))
+    #print(np.var(scores))
 
 
 def evaluate(formula, policy_name, T=5000):
