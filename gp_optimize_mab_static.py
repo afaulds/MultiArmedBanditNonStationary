@@ -4,6 +4,7 @@ from deap import creator
 from deap import gp
 from deap import tools
 import math
+import multiprocessing
 import numpy as np
 import operator
 import os
@@ -60,6 +61,8 @@ toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max
 
 def main():
     random.seed(318)
+    pool = multiprocessing.Pool()
+    toolbox.register("map", pool.map)
 
     pop = toolbox.population(n=500)
     best_list = tools.HallOfFame(10)
