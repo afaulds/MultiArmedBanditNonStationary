@@ -43,8 +43,7 @@ toolbox.register("compile", gp.compile, pset=pset)
 cache = {}
 
 def evalSymbReg(individual):
-    formula = str(individual).replace(" ", "")
-    func = toolbox.compile(expr=formula)
+    func = toolbox.compile(expr=individual)
     if formula not in cache:
         score = evaluate(func)
         cache[formula] = score
@@ -78,8 +77,9 @@ def main():
                                    halloffame=hof, verbose=True)
     # print log
     with open("solutions.txt", "w") as outfile:
-        for ind in hof:
-            score = evaluate(ind, 40)
+        for individual in hof:
+            func = toolbox.compile(expr=individual)
+            score = evaluate(func, 40)
             if score[0] < 0.1:
                 outfile.write(str(ind) + "\n")
 
