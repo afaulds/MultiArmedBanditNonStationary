@@ -43,6 +43,7 @@ toolbox.register("compile", gp.compile, pset=pset)
 cache = {}
 
 def evalSymbReg(individual):
+    formula = str(individual)
     func = toolbox.compile(expr=individual)
     if formula not in cache:
         score = evaluate(func)
@@ -80,7 +81,7 @@ def main():
         for individual in hof:
             func = toolbox.compile(expr=individual)
             score = evaluate(func, 40)
-            if score[0] < 0.1:
+            if score < 0.1:
                 outfile.write(str(ind) + "\n")
 
 if __name__ == "__main__":
