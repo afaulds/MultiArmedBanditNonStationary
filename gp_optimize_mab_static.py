@@ -82,7 +82,7 @@ def main():
             func = toolbox.compile(expr=individual)
             score = evaluate(func, 40)
             if score < 0.1:
-                outfile.write(str(ind) + "\n")
+                outfile.write(str(individual) + "\n")
 
 if __name__ == "__main__":
     main()
