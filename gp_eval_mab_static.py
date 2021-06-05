@@ -1,33 +1,22 @@
 from History import History
 from machine import MachineManager
+import numpy as np
 from policy import PolicyManager
 import sys
 from utils import Timer
-import numpy as np
 
 
-def main():
-    num_runs = 10
-    if len(sys.argv) <= 1:
-        print("Supply formula for first argument. (i.e. 'x-a')")
-        return
-    formula = sys.argv[1].strip("\'")
-    if len(sys.argv) == 3 and sys.argv[2] == "--show":
-        show_scores = True
-    else:
-        show_scores = False
+def evaluate(func):
+    num_runs = 20
     scores = []
     for i in range(num_runs):
-        score = evaluate(formula, "StaticMachine", 1000)
+        score = single_evaluate(func, "StaticMachine", 1000)
         scores.append(score)
-        if score > 0.99:
-            print(1.0)
-            return
-    print(np.mean(scores))
-    #print(np.var(scores))
+    return np.mean(scores)
+    return np.mean(scores) + np.var(scores)
 
 
-def evaluate(formula, policy_name, T=5000):
+def single_evaluate(func, policy_name, T):
     pm = PolicyManager()
     mm = MachineManager()
     mm.use(policy_name)
@@ -40,7 +29,7 @@ def evaluate(formula, policy_name, T=5000):
 
     h.reset()
     pm.use("GeneticAlgorithmPolicy", mm.get_num_arms())
-    pm.set_params({"eq_str": formula})
+    pm.set_params({"func": func})
 
     # Loop getting arm, playing machine, saving reward
     for t in range(1, T):
@@ -51,7 +40,3 @@ def evaluate(formula, policy_name, T=5000):
 
     # Print results of run
     return h.get_normalized_arm_regret()
-
-
-if __name__ == "__main__":
-    main()

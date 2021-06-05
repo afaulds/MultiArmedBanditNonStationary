@@ -10,6 +10,7 @@ import operator
 import os
 import random
 from gp_shared_operators import *
+from gp_eval_mab_static import *
 
 pset = gp.PrimitiveSet("MAIN", 4)
 pset.addPrimitive(add, 2)
@@ -45,9 +46,8 @@ def evalSymbReg(individual):
     formula = str(individual).replace(" ", "")
     func = toolbox.compile(expr=formula)
     if formula not in cache:
-        num = float(os.popen("python gp_eval_mab_static.py '{}'".format(formula)).read())
-        # print("{} => {}".format(formula, num))
-        cache[formula] = num
+        score = evaluate(func)
+        cache[formula] = score
     return cache[formula],
 
 toolbox.register("evaluate", evalSymbReg)
@@ -60,12 +60,11 @@ toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_v
 toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17))
 
 def main():
-    random.seed(318)
     pool = multiprocessing.Pool()
     toolbox.register("map", pool.map)
 
     pop = toolbox.population(n=500)
-    best_list = tools.HallOfFame(10)
+    hof = tools.HallOfFame(10)
 
     stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
     stats_size = tools.Statistics(len)
@@ -76,11 +75,13 @@ def main():
     mstats.register("max", np.max)
 
     pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 100, stats=mstats,
-                                   halloffame=best_list, verbose=True)
+                                   halloffame=hof, verbose=True)
     # print log
-    for best in best_list:
-        print(best)
-    # return pop, log, hof
+    with open("solutions.txt", "w") as outfile:
+        for ind in hof:
+            score = evalSymbReg(ind)
+            if score[0] < 0.1:
+                outfile.write(str(ind) + "\n")
 
 if __name__ == "__main__":
     main()

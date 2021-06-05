@@ -9,7 +9,7 @@ class GeneticAlgorithmPolicy(BasePolicy):
         self.a = [1] * self.num_arms
         self.b = [1] * self.num_arms
         self.params = {
-            "eq_str": "0",
+            "func": None,
         }
 
     def set_params(self, params):
@@ -39,5 +39,4 @@ class GeneticAlgorithmPolicy(BasePolicy):
         return "GeneticAlgorithm"
 
     def __evaluate(self, a, b, n, t):
-        return eval(self.params["eq_str"])
-
+        return self.params["func"](a, b, n, t)
