@@ -7,11 +7,15 @@ from utils import Timer
 
 
 def evaluate(func, num_runs=5):
+    num_runs = 5
     scores = []
     for i in range(num_runs):
         score = single_evaluate(func, "StaticMachine", 1000)
         scores.append(score)
-    return np.mean(scores)
+    while np.var(scores) > 0.001 and num_runs < 40:
+        score = single_evaluate(func, "StaticMachine", 1000)
+        scores.append(score)
+        num_runs += 1
     return np.mean(scores) + np.var(scores)
 
 
