@@ -6,8 +6,7 @@ import sys
 from utils import Timer
 
 
-def evaluate(func):
-    num_runs = 20
+def evaluate(func, num_runs=5):
     scores = []
     for i in range(num_runs):
         score = single_evaluate(func, "StaticMachine", 1000)

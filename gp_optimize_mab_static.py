@@ -79,7 +79,7 @@ def main():
     # print log
     with open("solutions.txt", "w") as outfile:
         for ind in hof:
-            score = evalSymbReg(ind)
+            score = evaluate(ind, 40)
             if score[0] < 0.1:
                 outfile.write(str(ind) + "\n")
 
