@@ -77,7 +77,7 @@ def main():
     pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 100, stats=mstats,
                                    halloffame=hof, verbose=True)
     # print log
-    with open("solutions.txt", "w") as outfile:
+    with open("solutions.txt", "a") as outfile:
         for individual in hof:
             func = toolbox.compile(expr=individual)
             score = evaluate(func, 40)
