@@ -6,9 +6,12 @@ import sys
 from utils import Cache, Timer
 
 
-def evaluate(func):
-    key = hash(func)
-    score_mean, score_var = Cache.process(key, evaluate_cache, func)
+def evaluate(func, formula=None):
+    if formula is None:
+        score_mean, score_var = evaluate_cache(func)
+    else:
+        key = hash(formula)
+        score_mean, score_var = Cache.process(key, evaluate_cache, func)
     return score_mean + score_var
 
 

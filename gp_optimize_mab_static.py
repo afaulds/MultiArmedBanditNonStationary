@@ -46,7 +46,7 @@ def evalSymbReg(individual):
     formula = str(individual)
     func = toolbox.compile(expr=individual)
     if formula not in cache:
-        score = evaluate(func)
+        score = evaluate(func, formula)
         cache[formula] = score
     return cache[formula],
 
@@ -80,7 +80,7 @@ def main():
     with open("solutions.txt", "a") as outfile:
         for individual in hof:
             func = toolbox.compile(expr=individual)
-            score = evaluate(func, 40)
+            score = evaluate(func)
             if score < 0.1:
                 outfile.write(str(individual) + "\n")
 
