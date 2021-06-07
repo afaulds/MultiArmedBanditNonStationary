@@ -10,8 +10,7 @@ def evaluate(func, formula=None):
     if formula is None:
         score_mean, score_var = evaluate_cache(func)
     else:
-        key = hash(formula)
-        score_mean, score_var = Cache.process(key, evaluate_cache, func)
+        score_mean, score_var = Cache.process(formula, evaluate_cache, func)
     return score_mean + score_var
 
 
