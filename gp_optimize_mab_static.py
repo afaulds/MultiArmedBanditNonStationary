@@ -74,7 +74,7 @@ def main():
     mstats.register("min", np.min)
     mstats.register("max", np.max)
 
-    pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 100, stats=mstats,
+    pop, log = algorithms.eaSimple(pop, toolbox, 0.8, 0.3, 100, stats=mstats,
                                    halloffame=hof, verbose=True)
     # print log
     with open("solutions.txt", "a") as outfile:

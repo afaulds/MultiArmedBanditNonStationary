@@ -3,20 +3,22 @@ from machine import MachineManager
 import numpy as np
 from policy import PolicyManager
 import sys
-from utils import Timer
+from utils import Cache, Timer
 
 
-def evaluate(func, num_runs=5):
-    num_runs = 5
+def evaluate(func):
+    key = hash(func)
+    score_mean, score_var = Cache.process(key, evaluate_cache, func)
+    return score_mean + score_var
+
+
+def evaluate_cache(func):
+    num_runs = 100
     scores = []
     for i in range(num_runs):
-        score = single_evaluate(func, "StaticMachine", 1000)
+        score = single_evaluate(func, "StaticMachine", 5000)
         scores.append(score)
-    while np.var(scores) > 0.001 and num_runs < 40:
-        score = single_evaluate(func, "StaticMachine", 1000)
-        scores.append(score)
-        num_runs += 1
-    return np.mean(scores) + np.var(scores)
+    return np.mean(scores), np.var(scores)
 
 
 def single_evaluate(func, policy_name, T):
