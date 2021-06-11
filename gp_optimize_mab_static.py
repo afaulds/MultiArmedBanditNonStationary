@@ -45,10 +45,8 @@ cache = {}
 def evalSymbReg(individual):
     formula = str(individual)
     func = toolbox.compile(expr=individual)
-    if formula not in cache:
-        score = evaluate(func, formula)
-        cache[formula] = score
-    return cache[formula],
+    score = evaluate(func, formula)
+    return score,
 
 toolbox.register("evaluate", evalSymbReg)
 toolbox.register("select", tools.selTournament, tournsize=3)
