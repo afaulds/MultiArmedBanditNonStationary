@@ -2,7 +2,7 @@ from policy.BasePolicy import BasePolicy
 import numpy as np
 
 
-class UCBPolicy(BasePolicy):
+class SWUCBPolicy(BasePolicy):
     """
     Similar to greedy but includes an upper confidence bound
     that is the exploration element. It reduces as the arm is
@@ -17,6 +17,12 @@ class UCBPolicy(BasePolicy):
         self.num_arms = num_arms
         self.a = [1] * self.num_arms
         self.n = [1] * self.num_arms
+        self.cycle_memory = []
+        self.params = {
+            "zeta": 0.6,
+            "tau": 100,
+            "B": 1,
+        }
 
     def set_params(self, params):
         pass
@@ -26,7 +32,7 @@ class UCBPolicy(BasePolicy):
         best_arm = 0
         for arm_id in range(self.num_arms):
             ucb = 1.0 * self.a[arm_id] / self.n[arm_id]
-            ucb += np.sqrt(2 * np.log(t) / (self.n[arm_id]))
+            ucb += self.params["B"] * np.sqrt(self.params["zeta"] * np.log(min(t, self.params["tau"])) / (self.n[arm_id]))
             if ucb > best_ucb:
                 best_ucb = ucb
                 best_arm = arm_id
@@ -36,5 +42,11 @@ class UCBPolicy(BasePolicy):
         self.a[arm_id] += reward
         self.n[arm_id] += 1
 
+        self.cycle_memory.append((arm_id, reward))
+        if len(self.cycle_memory) > self.params["tau"]:
+            (arm_id, reward) = self.cycle_memory.pop(0)
+            self.a[arm_id] -= reward
+            self.n[arm_id] -= 1
+
     def get_name(self):
-        return "UCB"
+        return "SWUCB (\u03C4={})".format(self.params["tau"])

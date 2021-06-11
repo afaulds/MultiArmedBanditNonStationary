@@ -12,8 +12,8 @@ class DiscountedThompsonSamplingPolicy(BasePolicy):
 
     def __init__(self, num_arms):
         self.num_arms = num_arms
-        self.a = [0] * self.num_arms
-        self.b = [0] * self.num_arms
+        self.a = [1] * self.num_arms
+        self.b = [1] * self.num_arms
         self.params = {
             "gamma": 0.6,
         }
@@ -25,7 +25,7 @@ class DiscountedThompsonSamplingPolicy(BasePolicy):
         best_value = 0
         best_arm = 0
         for arm_id in range(self.num_arms):
-            value = np.random.beta(self.a[arm_id] + 1, self.b[arm_id] + 1)
+            value = np.random.beta(self.a[arm_id], self.b[arm_id])
             if value > best_value:
                 best_value = value
                 best_arm = arm_id

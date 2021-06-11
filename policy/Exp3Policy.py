@@ -10,9 +10,10 @@ class Exp3Policy(BasePolicy):
     def __init__(self, num_arms):
         self.num_arms = num_arms
         self.w = [1] * self.num_arms
-        self.p = [0] * self.num_arms
+        self.p = [1.0 / self.num_arms] * self.num_arms
         self.params = {
-            "gamma": 0.3,
+            "gamma": 0.9,
+            "eta": 0.1,
         }
 
     def set_params(self, params):
@@ -29,6 +30,12 @@ class Exp3Policy(BasePolicy):
         return best_arm
 
     def store(self, t, arm_id, reward):
+        loss_tilde = (1-reward)/(self.p[arm_id] + self.params["gamma"])
+        self.w[arm_id] = self.w[arm_id] * np.exp(-self.params["eta"]*loss_tilde)
+        for i in range(self.num_arms):
+            self.p[i] = self.w[i] / np.sum(self.w)
+        return
+        # OLD
         W = 0
         for j in range(self.num_arms):
             W += self.w[j]
@@ -43,4 +50,4 @@ class Exp3Policy(BasePolicy):
             self.w[j] = self.w[j] * np.exp(self.params["gamma"] * reward_carrot / self.num_arms)
 
     def get_name(self):
-        return "Exp3"
+        return "EXP3-IX"
