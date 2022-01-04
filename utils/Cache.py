@@ -11,7 +11,6 @@ class Cache:
         if file_name in Cache.memory:
             return Cache.memory[file_name]
         elif Cache.__key_exists(file_name):
-            print("FILE")
             return Cache.__read_file(file_name)
         else:
             data = func(*args)

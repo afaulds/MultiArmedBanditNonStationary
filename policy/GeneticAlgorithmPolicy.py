@@ -10,6 +10,7 @@ class GeneticAlgorithmPolicy(BasePolicy):
         self.b = [1] * self.num_arms
         self.params = {
             "func": None,
+            "eq_str": None
         }
 
     def set_params(self, params):
@@ -39,4 +40,7 @@ class GeneticAlgorithmPolicy(BasePolicy):
         return "GeneticAlgorithm"
 
     def __evaluate(self, a, b, n, t):
-        return self.params["func"](a, b, n, t)
+        if self.params["func"] is None:
+            return eval(self.params["eq_str"])
+        else:
+            return self.params["func"](a, b, n, t)

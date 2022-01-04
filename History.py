@@ -153,21 +153,22 @@ class History:
         machine_list = []
         policy_list = []
         reward = {}
-        with open("results/results.md", "r") as infile:
-            line_num = 0
-            for line in infile:
-                if line_num == 0:
-                    items = line.strip("\n|").split("|")
-                    machine_list.extend(items)
-                elif line_num > 1:
-                    items = line.strip("\n|").split("|")
-                    p = items[0]
-                    policy_list.append(p)
-                    for i in range(len(items)-1):
-                        m = machine_list[i]
-                        key = "{}_{}".format(m, p)
-                        reward[key] = float(items[i+1])
-                line_num += 1
+        if os.path.exists("results/results.md"):
+            with open("results/results.md", "r") as infile:
+                line_num = 0
+                for line in infile:
+                    if line_num == 0:
+                        items = line.strip("\n|").split("|")
+                        machine_list.extend(items)
+                    elif line_num > 1:
+                        items = line.strip("\n|").split("|")
+                        p = items[0]
+                        policy_list.append(p)
+                        for i in range(len(items)-1):
+                            m = machine_list[i]
+                            key = "{}_{}".format(m, p)
+                            reward[key] = float(items[i+1])
+                    line_num += 1
         policy = policy.split(' ')[0]
         if machine not in machine_list:
             machine_list.append(machine)
