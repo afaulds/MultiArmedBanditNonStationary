@@ -1,0 +1,42 @@
+python gp_optimize_mab.py StaticMachine
+python gp_optimize_mab.py SlowVaryingMachine
+python gp_optimize_mab.py NonCycleVaryingMachine
+python gp_optimize_mab.py FastVaryingMachine
+python gp_optimize_mab.py AdversarialMachine
+python gp_optimize_mab.py AbruptVaryingMachine
+
+python gp_optimize_mab.py StaticMachine
+python gp_optimize_mab.py SlowVaryingMachine
+python gp_optimize_mab.py NonCycleVaryingMachine
+python gp_optimize_mab.py FastVaryingMachine
+python gp_optimize_mab.py AdversarialMachine
+python gp_optimize_mab.py AbruptVaryingMachine
+
+python gp_optimize_mab.py StaticMachine
+python gp_optimize_mab.py SlowVaryingMachine
+python gp_optimize_mab.py NonCycleVaryingMachine
+python gp_optimize_mab.py FastVaryingMachine
+python gp_optimize_mab.py AdversarialMachine
+python gp_optimize_mab.py AbruptVaryingMachine
+
+python gp_optimize_mab.py StaticMachine
+python gp_optimize_mab.py SlowVaryingMachine
+python gp_optimize_mab.py NonCycleVaryingMachine
+python gp_optimize_mab.py FastVaryingMachine
+python gp_optimize_mab.py AdversarialMachine
+python gp_optimize_mab.py AbruptVaryingMachine
+
+python gp_optimize_mab.py StaticMachine
+python gp_optimize_mab.py SlowVaryingMachine
+python gp_optimize_mab.py NonCycleVaryingMachine
+python gp_optimize_mab.py FastVaryingMachine
+python gp_optimize_mab.py AdversarialMachine
+python gp_optimize_mab.py AbruptVaryingMachine
+
+python gp_optimize_mab.py StaticMachine
+python gp_optimize_mab.py SlowVaryingMachine
+python gp_optimize_mab.py NonCycleVaryingMachine
+python gp_optimize_mab.py FastVaryingMachine
+python gp_optimize_mab.py AdversarialMachine
+python gp_optimize_mab.py AbruptVaryingMachine
+

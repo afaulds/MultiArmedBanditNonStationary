@@ -10,22 +10,29 @@ import operator
 import os
 import random
 from gp_shared_operators import *
-from gp_eval_mab_static import *
+from gp_eval_mab import *
 
-pset = gp.PrimitiveSet("MAIN", 4)
-pset.addPrimitive(add, 2)
-pset.addPrimitive(sub, 2)
-pset.addPrimitive(mul, 2)
-pset.addPrimitive(protected_div, 2)
-pset.addPrimitive(protected_log, 1)
-pset.addPrimitive(protected_sqrt, 1)
-pset.addPrimitive(neg, 1)
-pset.addPrimitive(cos, 1)
-pset.addPrimitive(sin, 1)
-pset.addPrimitive(min, 2)
-pset.addPrimitive(max, 2)
-pset.addPrimitive(protected_beta, 2)
+if len(sys.argv) == 2:
+    machine_type = sys.argv[1]
+else:
+    machine_type = None
+
+pset = gp.PrimitiveSetTyped("main", [float, float, float, float], float)
+pset.addPrimitive(add, [float, float], float)
+pset.addPrimitive(sub, [float, float], float)
+pset.addPrimitive(mul, [float, float], float)
+pset.addPrimitive(protected_div, [float, float], float)
+pset.addPrimitive(protected_log, [float], float)
+pset.addPrimitive(protected_sqrt, [float], float)
+pset.addPrimitive(neg, [float], float)
+pset.addPrimitive(cos, [float], float)
+pset.addPrimitive(sin, [float], float)
+pset.addPrimitive(min, [float, float], float)
+pset.addPrimitive(max, [float, float], float)
+pset.addPrimitive(protected_beta, [float, float], float)
+pset.addPrimitive(sigmoid, [float], float)
 #pset.addEphemeralConstant("rand101", lambda: random.randint(-1,1))
+#pset.renameArguments(ARG0="eq")
 pset.renameArguments(ARG0="a")
 pset.renameArguments(ARG1="b")
 pset.renameArguments(ARG2="n")
@@ -40,12 +47,10 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
-cache = {}
-
 def evalSymbReg(individual):
     formula = str(individual)
     func = toolbox.compile(expr=individual)
-    score = evaluate(func, formula)
+    score = evaluate(machine_type, func, formula)
     return score,
 
 toolbox.register("evaluate", evalSymbReg)
@@ -78,9 +83,8 @@ def main():
     with open("solutions.txt", "a") as outfile:
         for individual in hof:
             func = toolbox.compile(expr=individual)
-            score = evaluate(func)
-            if score < 0.1:
-                outfile.write(str(individual) + "\n")
+            score = evaluate(machine_type, func)
+            outfile.write("{}\t{}\t{}\n".format(machine_type, individual, score))
 
 if __name__ == "__main__":
     main()
