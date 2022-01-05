@@ -175,7 +175,7 @@ class History:
         if policy not in policy_list:
             policy_list.append(policy)
         key = "{}_{}".format(machine, policy)
-        reward[key] = self.stats["total_reward"]
+        reward[key] = 1.0 * (self.stats["plays"] - self.stats["total_reward"]) / self.stats["plays"]
 
         with open("results/results.md", "w") as outfile:
             outfile.write("||")
