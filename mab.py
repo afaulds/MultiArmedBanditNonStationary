@@ -2,11 +2,10 @@ from History import History
 from machine import MachineManager
 from policy import PolicyManager
 import policy
+from utils import Settings
 from utils import Timer
 
 
-force_policy_test = None
-force_machine_test = None
 T = 5000 # Max time
 
 
@@ -21,7 +20,7 @@ def main():
     mm = MachineManager()
 
     # Loop through all machines
-    for machine_name in force_machine_test or mm.get_machine_names():
+    for machine_name in Settings.get_value("machine_list") or mm.get_machine_names():
 
         # Initialize for machine.
         mm.use(machine_name)
@@ -33,7 +32,7 @@ def main():
             h.store_oracle(t, arm_id, prob)
 
         # Loop through all policies
-        for policy_name in force_policy_test or pm.get_policy_names():
+        for policy_name in Settings.get_value("policy_list") or pm.get_policy_names():
             # Run policy for machine
 
             # Initialize policy
@@ -83,8 +82,10 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "GeneticAlgorithmPolicy":
             pm.set_params({
-                #"eq_str": "t-b-2*np.log(t)"
-                "eq_str": "(np.sqrt((a+b))/b)"
+                #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
+                #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
+                #BESTINDIVIDUAL
+                "eq_str": "protected_div(add(max(n, b), b), mul(b, b))"
             })
     if machine_name == "FastVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
@@ -106,8 +107,10 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "GeneticAlgorithmPolicy":
             pm.set_params({
-                #"eq_str": "t-b-2*np.log(t)"
-                "eq_str": "(np.sqrt((a+b))/b)"
+                #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
+                #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
+                #BESTINDIVIDUAL"eq_str": "sub(t, max(b, protected_beta(t, min(b, a))))"
+                "eq_str": "t-b"
             })
     elif machine_name == "SlowVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
@@ -129,8 +132,10 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "GeneticAlgorithmPolicy":
             pm.set_params({
-                #"eq_str": "t-b-2*np.log(t)"
-                "eq_str": "(np.sqrt((a+b))/b)"
+                #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
+                #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
+                #BESTINDIVIDUAL
+                "eq_str": "protected_div(max(max(b, add(max(max(add(t, a), b), a), a)), add(max(max(add(t, a), t), add(add(max(b, max(add(t, a), t)), neg(b)), a)), a)), b)"
             })
     elif machine_name == "StaticMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
@@ -152,8 +157,10 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "GeneticAlgorithmPolicy":
             pm.set_params({
-                #"eq_str": "t-b-2*np.log(t)"
-                "eq_str": "(np.sqrt((a+b))/b)"
+                #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
+                #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
+                #BESTINDIVIDUAL
+                "eq_str": "add(protected_sqrt(a), sub(a, b))"
             })
     elif machine_name == "NonCycleVaryingMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
@@ -175,8 +182,10 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "GeneticAlgorithmPolicy":
             pm.set_params({
-                #"eq_str": "t-b-2*np.log(t)"
-                "eq_str": "(np.sqrt((a+b))/b)"
+                #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
+                #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
+                #BESTINDIVIDUAL
+                "eq_str": "protected_div(protected_div(protected_sqrt(min(a, n)), protected_beta(t, min(min(a, n), n))), b)"
             })
     elif machine_name == "AdversarialMachine":
         if policy_name == "DynamicThompsonSamplingPolicy":
@@ -198,8 +207,10 @@ def set_optimal_params(machine_name, policy_name, pm):
             })
         elif policy_name == "GeneticAlgorithmPolicy":
             pm.set_params({
-                #"eq_str": "t-b-2*np.log(t)"
-                "eq_str": "(np.sqrt((a+b))/b)"
+                #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
+                #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
+                #BESTINDIVIDUAL
+                "eq_str": "protected_div(a, a + b) + protected_sqrt(2 * protected_log(t) / (a + b))"
             })
 
 

@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from utils import Settings
 
 
 class History:
@@ -116,8 +117,12 @@ class History:
         y = np.divide(z - np.cumsum(np.equal(self.oracle["arm(time)"], self.stats["arm(time)"])), z)
         key = "{}_regret_arm".format(machine)
         plt.figure(self.__get_figure_num(key))
-        plt.plot(x, y, label=policy)
-        plt.legend()
+        marker = Settings.get_value("{}.marker".format(policy.split(" ")[0]), "")
+        plt.plot(x, y, marker, label=policy)
+        plt.legend(loc='upper left')
+        ylim = Settings.get_value("{}.ylim".format(machine))
+        if ylim is not None:
+            plt.ylim(ylim)
         os.makedirs("results/{}".format(machine), exist_ok=True)
         plt.savefig("results/{}/regret_arm.png".format(machine))
 
@@ -158,10 +163,10 @@ class History:
                 line_num = 0
                 for line in infile:
                     if line_num == 0:
-                        items = line.strip("\n|").split("|")
+                        items = line.strip("\n\t").split("\t")
                         machine_list.extend(items)
-                    elif line_num > 1:
-                        items = line.strip("\n|").split("|")
+                    else:
+                        items = line.strip("\n").split("\t")
                         p = items[0]
                         policy_list.append(p)
                         for i in range(len(items)-1):
@@ -178,23 +183,17 @@ class History:
         reward[key] = 1.0 * (self.stats["plays"] - self.stats["total_reward"]) / self.stats["plays"]
 
         with open("results/results.md", "w") as outfile:
-            outfile.write("||")
             for machine in machine_list:
-                outfile.write("{}|".format(machine))
-            outfile.write("\n")
-
-            outfile.write("|---|")
-            for machine in machine_list:
-                outfile.write("---|".format(machine))
+                outfile.write("\t{}".format(machine))
             outfile.write("\n")
 
             for policy in policy_list:
-                outfile.write("|{}|".format(policy))
+                outfile.write("{}".format(policy))
                 for machine in machine_list:
                     key = "{}_{}".format(machine, policy)
                     val = 0
                     if key in reward:
                         val = reward[key]
-                    outfile.write("{:.2f}|".format(val))
+                    outfile.write("\t{:.3f}".format(val))
                 outfile.write("\n")
 
