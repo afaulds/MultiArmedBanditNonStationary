@@ -3,7 +3,7 @@ import numpy as np
 from gp_shared_operators import *
 
 
-class GeneticAlgorithmPolicy(BasePolicy):
+class GeneticProgrammingPolicy(BasePolicy):
     def __init__(self, num_arms):
         self.num_arms = num_arms
         self.a = [1] * self.num_arms
@@ -37,7 +37,7 @@ class GeneticAlgorithmPolicy(BasePolicy):
         self.b[arm_id] = self.b[arm_id] + (1 - reward)
 
     def get_name(self):
-        return "GeneticAlgorithm"
+        return "GP"
 
     def __evaluate(self, a, b, n, t):
         if self.params["func"] is None:

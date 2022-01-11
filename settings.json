@@ -1,6 +1,6 @@
 {
-  "machine_list": [ "StaticMachine" ],
-  "policy_list": [ "DiscountedThompsonSamplingPolicy", "DUCBPolicy", "Exp3Policy", "GeneticAlgorithmPolicy", "GreedyPolicy", "SWUCBPolicy", "ThompsonSamplingPolicy", "UCBPolicy" ],
+  "machine_list": [ "AdversarialMachine" ],
+  "policy_list": [ "DiscountedThompsonSamplingPolicy", "DUCBPolicy", "Exp3Policy", "GeneticProgrammingPolicy", "GreedyPolicy", "SWUCBPolicy", "ThompsonSamplingPolicy", "UCBPolicy" ],
   "AbruptVarying.ylim": [ 0.5, 0.85 ],
   "Adversarial.ylim": [ 0.6, 0.9 ],
   "FastVarying.ylim": [ 0.2, 0.8 ],

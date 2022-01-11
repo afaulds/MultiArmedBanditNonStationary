@@ -80,7 +80,7 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.992,
                 "period": 250,
             })
-        elif policy_name == "GeneticAlgorithmPolicy":
+        elif policy_name == "GeneticProgrammingPolicy":
             pm.set_params({
                 #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
                 #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
@@ -105,7 +105,7 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.951,
                 "period": 100,
             })
-        elif policy_name == "GeneticAlgorithmPolicy":
+        elif policy_name == "GeneticProgrammingPolicy":
             pm.set_params({
                 #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
                 #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
@@ -130,7 +130,7 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.992,
                 "period": 1000,
             })
-        elif policy_name == "GeneticAlgorithmPolicy":
+        elif policy_name == "GeneticProgrammingPolicy":
             pm.set_params({
                 #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
                 #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
@@ -155,7 +155,7 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 1.0,
                 "period": 1000,
             })
-        elif policy_name == "GeneticAlgorithmPolicy":
+        elif policy_name == "GeneticProgrammingPolicy":
             pm.set_params({
                 #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
                 #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
@@ -180,7 +180,7 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.996,
                 "period": 5000,
             })
-        elif policy_name == "GeneticAlgorithmPolicy":
+        elif policy_name == "GeneticProgrammingPolicy":
             pm.set_params({
                 #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
                 #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
@@ -205,12 +205,12 @@ def set_optimal_params(machine_name, policy_name, pm):
                 "gamma": 0.992,
                 "period": 800,
             })
-        elif policy_name == "GeneticAlgorithmPolicy":
+        elif policy_name == "GeneticProgrammingPolicy":
             pm.set_params({
                 #BESTOVERALL"eq_str": "protected_div(protected_sqrt(add(min(mul(protected_log(b), min(b, max(t, t))), n), max(t, mul(b, b)))), min(mul(b, protected_sqrt(add(b, sigmoid(protected_sqrt(min(mul(b, protected_sqrt(add(b, b))), b)))))), b))"
                 #UCB"eq_str": "protected_div(a, a + b) + protected_sqrt(2 * np.log(t) / (a + b))"
                 #BESTINDIVIDUAL
-                "eq_str": "protected_div(a, a + b) + protected_sqrt(2 * protected_log(t) / (a + b))"
+                "eq_str": "protected_div(a + 2 * b, b * b)"
             })
 
 

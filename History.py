@@ -70,11 +70,16 @@ class History:
         print("   percent: {}".format(1.0 * self.stats["total_reward"] / self.stats["plays"]))
 
     def __plot_oracle(self, machine, policy):
+        colors = ["b-", "g--", "r-.", "k:"]
         x = self.oracle["time"]
-        y = self.oracle["reward(time)"]
         key = "{}_oracle_reward".format(machine)
         plt.figure(self.__get_figure_num(key))
-        plt.plot(x, y)
+        y = np.array(self.oracle["reward(time)"])
+        for i in range(4):
+            y = np.array(self.oracle["reward(time)"])
+            y[np.not_equal(self.oracle["arm(time)"], i)] = None
+            plt.plot(x, y, colors[i], label="Arm {}".format(i))
+        plt.legend()
         plt.xlim(0, 1000)
         plt.ylim(0, 1)
         os.makedirs("results/{}".format(machine), exist_ok=True)
